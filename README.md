@@ -1,2 +1,3 @@
-# -Framework-PHP
-Build the next awesome social network. The idea is to create an application like Twitter, but with a truly RESTful API.
+Usage:
+
+    php -S localhost:8080 -t web/
