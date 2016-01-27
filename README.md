@@ -33,9 +33,11 @@ The test suite, all tests have to pass at the end :)
 Contains the public files. Most of the time, we put assets (CSS, JS files)
 and a `index.php` file.
 
-The `index.php` file is the only entry point of your application.  It is called
+The `index.php` file is the only entry point of this application.  It is called
 a **front controller**.
 
 
 Autoloading
 -----------
+
+This is a PSR-0 compliant autoloader. The &micro;Framework has a `autoload.php` file.
