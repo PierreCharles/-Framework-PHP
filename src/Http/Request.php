@@ -12,6 +12,8 @@ class Request
     private $method;
     private $uri;
     private $parameters;
+    
+    
     public function __construct(array $query = array(), array $request = array())
     {
         $this->method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::GET;
@@ -24,7 +26,8 @@ class Request
     public function getMethod()
     {
         if ($this->method === self::POST) {
-            return $this->getParameter('_method');
+			
+            return $this->getParameter('_method', self::POST);
         }
         return $this->method;
     }

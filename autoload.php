@@ -6,7 +6,7 @@ if (file_exists($cacheFile)) {
     $cache = require $cacheFile;
 }
 else {
-    $cache = array();
+    $cache = [];
 }
 spl_autoload_register(function ($className) use (&$cache, $cacheFile, $Directories) {
     if (isset($cache[$className])) {

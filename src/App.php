@@ -4,6 +4,7 @@ use Exception\ExceptionHandler;
 use Exception\HttpException;
 use Routing\Route;
 use View\TemplateEngineInterface;
+use Http\Request;
 
 class App
 {
@@ -104,33 +105,45 @@ class App
     }
 
 
-    public function run()
+    public function run(Request $request = null)
     {
-        $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : self::GET;
-        $uri    = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
-
+		if(null === $request){
+			$request = Request::createFromGlobals();
+		}
+		
+		$method = $request->getMethod();
+		$uri = $request->getUri();
+      
+      
         foreach ($this->routes as $route) {
             if ($route->match($method, $uri)) {
-                return $this->process($route);
+                return $this->process($route, $request);
             }
         }
-
         throw new HttpException(404, 'Page Not Found');
     }
 
     /**
      * @param Route $route
      */
-    private function process(Route $route)
+    private function process(Route $route, Request $request)
     {
         try {
-            http_response_code($this->statusCode);
-            echo call_user_func_array($route->getCallable(), $route->getArguments());
+           $arguments = $route->getArguments();
+           array_unshift($arguments, $request);
+           echo call_user_func_array($route->getCallable(), $arguments);
         } catch (HttpException $e) {
             throw $e;
         } catch (\Exception $e) {
             throw new HttpException(500, null, $e);
         }
+    }
+    
+    public function redirect($destination, $statusCode = 302)
+    {
+        http_response_code($statusCode);
+        header(sprintf('Location: %s', $destination));
+        die;
     }
 
     /**

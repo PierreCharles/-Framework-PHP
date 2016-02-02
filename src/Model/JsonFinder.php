@@ -23,16 +23,17 @@ class JsonFinder implements FinderInterface
      */
     public function findOneById($id)
     {
-        return $this->bdd[$id - 1] ?? null;
+        return $this->bdd[$id] ?? null;
     }
+    
     public function add($data)
     {
         $this->bdd[] = $data;
     }
     public function remove($id)
     {
-        if (isset($this->bdd[$id - 1])) {
-            unset($this->bdd[$id - 1]);
+        if (isset($this->bdd[$id])) {
+            unset($this->bdd[$id]);
         }
     }
     public function persist()

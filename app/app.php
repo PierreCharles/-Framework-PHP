@@ -4,6 +4,8 @@ require __DIR__ . '/../autoload.php';
 
 use Exception\HttpException;
 use Http\Request;
+use Model\JsonFinder;
+
 
 // Config
 $debug = true;
@@ -22,12 +24,12 @@ $app->get('/', function () use ($app) {
 
 
 $app->get('/status', function () use ($app) {
-    $finder = new Model\JsonFinder();
+    $finder = new JsonFinder();
     return $app->render('status.php', ['status' => $finder->findAll()]);
 });
 
 $app->get('/status/(\d+)', function (Request $request, $id) use ($app) {
-    $finder = new Model\JsonFinder();
+    $finder = new JsonFinder();
     $status = $finder->findOneById($id);
     if (is_null($status)) {
         throw new HttpException(404);
@@ -44,8 +46,8 @@ $app->post('/', function () use ($app) {
 $app->post('/statuses', function (Request $request) use ($app) {
     $login = htmlspecialchars($request->getParameter('user'));
     $message = htmlspecialchars($request->getParameter('message'));
-    $finder = new Model\JsonFinder();
-    $finder->create($login, $statuses);
+    $finder = new JsonFinder();
+    $finder->add($login, $message);  
     $app->redirect('/status');
 });
 

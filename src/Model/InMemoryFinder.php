@@ -6,15 +6,15 @@ class InMemoryFinder implements FinderInterface
 {
     private $bdd;
     
-    public function __construct()
-    {
+    public function __construct() {
         $this->bdd = array(
             '1' => array(
                 'id' => '1',
                 'message' => 'TweetTweet',
-                'authorName' => 'picharles',
+                'user' => 'picharles',
             ));
     }
+    
     /**
      * @return array
      */
