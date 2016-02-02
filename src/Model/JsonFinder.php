@@ -7,7 +7,6 @@ class JsonFinder implements FinderInterface
 
     public function __construct()
     {
-		
         $this->bdd = json_decode(file_get_contents($this->filePath), true);
     }
     /**
@@ -15,8 +14,6 @@ class JsonFinder implements FinderInterface
      */
     public function findAll()
     {
-		
-        $this->bdd = json_decode(file_get_contents($this->filePath), true);
         return $this->bdd;
     }
     /**
