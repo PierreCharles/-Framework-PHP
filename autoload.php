@@ -1,23 +1,30 @@
 <?php
+$cacheFile = __DIR__ .DIRECTORY_SEPARATOR."cache.php";
+$Directories = [ 'src' => 'src','tests' => 'tests'];
 
-$cacheMap=[];
-
-spl_autoload_register(function($className) use($cacheMap){	
-	
-	$fileName = __DIR__ .DIRECTORY_SEPARATOR."cache.php";
-	include $fileName;	
-	
-	if (isset($cacheMap[$className])) {
-		require_once($cacheMap[$className]);		
-	}
-	else{		
-		$path = str_replace(["_","\\"], "/", $className) . '.php';
-		if (file_exists(__DIR__ .DIRECTORY_SEPARATOR.$path)) {	
-
-			$cacheMap[$className] = $path;
-			file_put_contents($fileName, sprintf("<?php\n\$cacheMap = %s ;",var_export($cacheMap,true)));
-			require_once(__DIR__ .DIRECTORY_SEPARATOR. $path);
-		}
-	}
+if (file_exists($cacheFile)) {
+    $cache = require $cacheFile;
+}
+else {
+    $cache = array();
+}
+spl_autoload_register(function ($className) use (&$cache, $cacheFile, $Directories) {
+    if (isset($cache[$className])) {
+        $path = $cache[$className];   
+    }
+    else {
+        $path = str_replace(array('\\', '_'), '/', $className) . '.php';
+    }
+    foreach ($Directories as $key => $dir) {
+        $completePath = __DIR__ . '/' . $dir . '/' . $path;
+        if (file_exists($completePath)) {
+            require_once($completePath);
+            $cache[str_replace(array('\\', '_'), '/', $className)] = $path;
+        }
+    }
+    file_put_contents($cacheFile, sprintf("<?php\n return %s;", var_export($cache, true)));
 });
+
+
+
 

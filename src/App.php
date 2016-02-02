@@ -8,11 +8,8 @@ use View\TemplateEngineInterface;
 class App
 {
     const GET    = 'GET';
-
     const POST   = 'POST';
-
     const PUT    = 'PUT';
-
     const DELETE = 'DELETE';
 
     /**
@@ -67,11 +64,45 @@ class App
     public function get($pattern, $callable)
     {
         $this->registerRoute(self::GET, $pattern, $callable);
-
+        return $this;
+    }
+    
+    /**
+     * @param string   $pattern
+     * @param callable $callable
+     *
+     * @return App
+     */
+    public function post($pattern, $callable)
+    {
+        $this->registerRoute(self::POST, $pattern, $callable);
+        return $this;
+    }
+    
+    /**
+     * @param string   $pattern
+     * @param callable $callable
+     *
+     * @return App
+     */
+    public function put($pattern, $callable)
+    {
+        $this->registerRoute(self::PUT, $pattern, $callable);
+        return $this;
+    }
+    
+    /**
+     * @param string   $pattern
+     * @param callable $callable
+     *
+     * @return App
+     */
+    public function delete($pattern, $callable)
+    {
+        $this->registerRoute(self::DELETE, $pattern, $callable);
         return $this;
     }
 
-    // Something is missing here...
 
     public function run()
     {
@@ -109,6 +140,6 @@ class App
      */
     private function registerRoute($method, $pattern, $callable)
     {
-        // complete this part
+		$this->routes[] = new Route($method, $pattern, $callable);
     }
 }
