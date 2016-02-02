@@ -2,7 +2,7 @@
 namespace Model;
 class JsonFinder implements FinderInterface
 {
-    private $filePath = __DIR__ . 'bdd.json';
+    private $filePath = __DIR__ .DIRECTORY_SEPARATOR.'Data/bdd.json';
     private $bdd;
     
     public function __construct()
