@@ -4,9 +4,10 @@ class JsonFinder implements FinderInterface
 {
     private $filePath = __DIR__ .DIRECTORY_SEPARATOR.'Data/bdd.json';
     private $bdd;
-    
+
     public function __construct()
     {
+		
         $this->bdd = json_decode(file_get_contents($this->filePath), true);
     }
     /**
@@ -14,6 +15,8 @@ class JsonFinder implements FinderInterface
      */
     public function findAll()
     {
+		
+        $this->bdd = json_decode(file_get_contents($this->filePath), true);
         return $this->bdd;
     }
     /**
@@ -26,9 +29,9 @@ class JsonFinder implements FinderInterface
         return $this->bdd[$id] ?? null;
     }
     
-    public function add($data)
+    public function add($user,$message)
     {
-        $this->bdd[] = $data;
+        array_push($this->bdd,array('user'=>$user,'message'=>$message));
     }
     public function remove($id)
     {
