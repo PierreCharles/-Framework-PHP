@@ -28,16 +28,27 @@ class JsonFinder implements FinderInterface
     
     public function add($user,$message)
     {
-        array_push($this->bdd,array('user'=>$user,'message'=>$message));
+        $this->bdd[count(self::findAll()) + 20] = array('user' => $user,'message' => $message );
+        self::persist();
     }
-    public function remove($id)
+    public function delete($id)
     {
         if (isset($this->bdd[$id])) {
             unset($this->bdd[$id]);
+            self::persist();
         }
     }
-    public function persist()
+    private function persist()
     {
         file_put_contents($this->filePath, json_encode($this->bdd));
+    }
+
+    // Error undefind
+    private function getMaxId(){
+        $max=0;
+        foreach($this->bdd as $value){
+            if($value > $max) $max=$value;
+        }
+        return $max;
     }
 }

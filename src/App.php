@@ -113,8 +113,7 @@ class App
 		
 		$method = $request->getMethod();
 		$uri = $request->getUri();
-      
-      
+
         foreach ($this->routes as $route) {
             if ($route->match($method, $uri)) {
                 return $this->process($route, $request);

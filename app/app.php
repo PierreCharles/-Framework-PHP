@@ -19,19 +19,19 @@ $app = new \App(new View\TemplateEngine(
  */
  // Matches if the HTTP method is GET
 $app->get('/', function () use ($app) {
-    return $app->render('index.php');
+    $finder = new JsonFinder();
+    return $app->render('index.php', ['status' => $finder->findAll()]);
 });
 
 
 $app->get('/status', function () use ($app) {
     $finder = new JsonFinder();
-    return $app->render('status.php', ['status' => $finder->findAll()]);
+    return $app->render('index.php', ['status' => $finder->findAll()]);
 });
 
 $app->get('/status/(\d+)', function (Request $request, $id) use ($app) {
     $finder = new JsonFinder();
-    $status = $finder->findOneById($id);
-    if (is_null($status)) {
+    if (null === $status = $finder->findOneById($id)) {
         throw new HttpException(404);
     }
     return $app->render('status.php', ['status' => $status]);
@@ -43,11 +43,11 @@ $app->post('/', function () use ($app) {
     return $app->render('index.php');
 });
 
-$app->post('/statuses', function (Request $request) use ($app) {
+$app->post('/status', function (Request $request) use ($app) {
     $login = htmlspecialchars($request->getParameter('user'));
     $message = htmlspecialchars($request->getParameter('message'));
     $finder = new JsonFinder();
-    $finder->add($login, $message);  
+    $finder->add($login, $message);
     $app->redirect('/status');
 });
 
@@ -59,8 +59,8 @@ $app->put('/', function () use ($app) {
 
  // Matches if the HTTP method is DELETE
 $app->delete('/status/(\d+)', function (Request $request, $id) use ($app) {
-    $finder = new \Model\JsonFinder();
-    if (is_null($finder->findOneById($id))) {
+    $finder = new JsonFinder();
+    if (null == $finder->findOneById($id)) {
         throw new HttpException(404, 'Not Found');
     }
     $finder->delete($id);

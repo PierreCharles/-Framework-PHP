@@ -1,19 +1,15 @@
-<?php 
-	if(count($parameters['status'])<=0){
-		echo "<h2>No status</h2>";
-	}
-	else {
-?>
-<form action="/statuses/<?= $parameters['status']['id'] ?>" method="POST">
-	<table>
-		<tr>
-			<td><strong><?= $parameters['status']['user']?></strong></td>
-			<td><?= $parameters['status']['message']?></td>
-			<td><a href="#">
-				<input type="hidden" name="_method" value="DELETE">
-				<input type="submit" value="X"></td>
-			</a></tr>
-	</table>   
-</form>
-
-<?php } ?>
+<?php
+if(empty($parameters['status']) || count($parameters['status'])<=0){
+    echo "<h2>No status posted with this ID yet</h2>";
+}
+else {
+    echo "<table>";
+    foreach ($parameters['status'] as $id => $status) {
+        echo "<tr>";
+        echo "<td><strong>" . $status['user'] . "</strong></td>";
+        echo "<td>" . $status['message'] . "</td>";
+        echo "<td><form action='/status/".$id."' method='POST'><a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a></form></td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+}
