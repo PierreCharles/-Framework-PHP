@@ -2,6 +2,16 @@ Launch server with :
 
     php -S localhost:8080 -t web/
 
+Testing :
+
+    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses
+
+    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/1
+
+    curl -XPOST -H "Accept: application/json" -H 'Content-Type: application/json' \
+        -d '{"user": "Picharles","message": "Test POST"}' \
+        http://localhost:8080/statuses
+
 
 Anatomy of &micro;Framework
 ---------------------------

@@ -7,6 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Exception\HttpException;
 use Http\Request;
 use Model\JsonFinder;
+use Http\JsonResponse;
 
 // Config
 $debug = true;
@@ -19,22 +20,34 @@ $app = new \App(new View\TemplateEngine(
  * Index
  */
  // Matches if the HTTP method is GET
-$app->get('/', function () use ($app) {
+$app->get('/', function (Request $request) use ($app) {
     $finder = new JsonFinder();
-    return $app->render('index.php', ['status' => $finder->findAll()]);
+    $data = ['status', $finder->findAll()];
+    if ($request->guessBestFormat() === 'json') {
+        return new JsonResponse($data);
+    }
+    return $app->render('index.php', $data);
 });
 
-$app->get('/status', function () use ($app) {
+$app->get('/statuses', function (Request $request) use ($app) {
     $finder = new JsonFinder();
-    return $app->render('index.php', ['status' => $finder->findAll()]);
+    $data = ['status', $finder->findAll()];
+    if ($request->guessBestFormat() === 'json') {
+        return new JsonResponse($data);
+    }
+    return $app->render('index.php', $data);
 });
 
-$app->get('/status/(\d+)', function (Request $request, $id) use ($app) {
+$app->get('/statuses/(\d+)', function (Request $request, $id) use ($app) {
     $finder = new JsonFinder();
     if (null === $status = $finder->findOneById($id)) {
         throw new HttpException(404);
     }
-    return $app->render('status.php', ['status' => $status]);
+    $data = ['status', $status];
+    if ($request->guessBestFormat() === 'json') {
+        return new JsonResponse($data);
+    }
+    return $app->render('status.php', $data);
 });
 
 // Matches if the HTTP method is POST
@@ -42,12 +55,14 @@ $app->post('/', function () use ($app) {
     return $app->render('index.php');
 });
 
-$app->post('/status', function (Request $request) use ($app) {
-    $login = htmlspecialchars($request->getParameter('user'));
-    $message = htmlspecialchars($request->getParameter('message'));
+$app->post('/statuses', function (Request $request) use ($app) {
     $finder = new JsonFinder();
-    $finder->add($login, $message);
-    $app->redirect('/status');
+    $finder->add(htmlspecialchars($request->getParameter('user')),
+        htmlspecialchars($request->getParameter('message')));
+    if ($request->guessBestFormat() === 'json') {
+        return new JsonResponse("statuses/" . count($finder->findAll()), 201);
+    }
+    $app->redirect('/statuses');
 });
 
  // Matches if the HTTP method is PUT
@@ -56,13 +71,13 @@ $app->put('/', function () use ($app) {
 });
 
  // Matches if the HTTP method is DELETE
-$app->delete('/status/(\d+)', function (Request $request, $id) use ($app) {
+$app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app) {
     $finder = new JsonFinder();
     if (null == $finder->findOneById($id)) {
         throw new HttpException(404, 'Not Found');
     }
     $finder->delete($id);
-    $app->redirect('/status');
+    $app->redirect('/statuses');
 });
 
 return $app;

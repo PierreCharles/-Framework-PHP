@@ -1,7 +1,7 @@
 
 <h1>Welcome on TweetTweet</h1>
 
-<form action="status" method="POST">
+<form action="statuses" method="POST">
     <input type="hidden" name="_method" value="POST">
 
     <label for="user">Your Name</label>
@@ -26,7 +26,7 @@ else {
         echo "<td>".$status['id']."</td>";
         echo "<td><strong>" . $status['user'] . "</strong></td>";
         echo "<td>" . $status['message'] . "</td>";
-        echo "<td><form action='/status/".$status['id']."' method='POST'><a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a></form></td>";
+        echo "<td><form action='/statuses/".$status['id']."' method='POST'><a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a></form></td>";
         echo "</tr>";
     }
     echo "</table>";
