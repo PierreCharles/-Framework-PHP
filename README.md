@@ -9,15 +9,16 @@
 
 In a terminal, try these commands:
 
-    curl -XGET -H "Accept: application/json" http://localhost:8082/statuses
-    $ curl -XGET -H "Accept: application/json" http://localhost:8082/statuses/1
-    curl -XGET -H "Accept: application/json" http://localhost:8082/statuses/1000
+    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses
+    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/1
+    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/1000
 
 Also, try to create new statuses using JSON:
 
-    $ curl -XPOST -H "Accept: application/json" -H 'Content-Type: application/json' \
-    -d '{"message": "Hello", "username": "..."}' \
-    http://localhost:8082/statuses
+    curl -XPOST -H "Accept: application/json" -H 'Content-Type: application/json' \
+    -d '{ "user": "picharles", "message": "Je suis un TweetTweet de test"}' \
+    http://localhost:8080/statuses
+
 Anatomy of &micro;Framework
 ---------------------------
 
