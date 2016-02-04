@@ -22,28 +22,30 @@ $app = new \App(new View\TemplateEngine(
  // Matches if the HTTP method is GET
 $app->get('/', function (Request $request) use ($app) {
     $finder = new JsonFinder();
-    $data = ['status', $finder->findAll()];
+    $data = array('status' => $finder->findAll());
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse($data);
     }
     return $app->render('index.php', $data);
 });
 
+// Matches if the HTTP method is GET
 $app->get('/statuses', function (Request $request) use ($app) {
     $finder = new JsonFinder();
-    $data = ['status', $finder->findAll()];
+    $data = array('status' => $finder->findAll());
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse($data);
     }
     return $app->render('index.php', $data);
 });
 
+// Matches if the HTTP method is GET
 $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app) {
     $finder = new JsonFinder();
     if (null === $status = $finder->findOneById($id)) {
         throw new HttpException(404);
     }
-    $data = ['status', $status];
+    $data = array('status' => $status);
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse($data);
     }
@@ -55,6 +57,7 @@ $app->post('/', function () use ($app) {
     return $app->render('index.php');
 });
 
+// Matches if the HTTP method is POST
 $app->post('/statuses', function (Request $request) use ($app) {
     $finder = new JsonFinder();
     $finder->add(htmlspecialchars($request->getParameter('user')),

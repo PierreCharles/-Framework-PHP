@@ -1,18 +1,20 @@
-Launch server with :
+### Launch server with :
 
+    composer install
     php -S localhost:8080 -t web/
 
-Testing :
+### Testing
 
-    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses
+In a terminal, try these commands:
 
-    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/1
+$ curl -XGET -H "Accept: application/json" http://localhost:8082/statuses
+$ curl -XGET -H "Accept: application/json" http://localhost:8082/statuses/1
+$ curl -XGET -H "Accept: application/json" http://localhost:8082/statuses/1000
+Also, try to create new statuses using JSON:
 
-    curl -XPOST -H "Accept: application/json" -H 'Content-Type: application/json' \
-        -d '{"user": "Picharles","message": "Test POST"}' \
-        http://localhost:8080/statuses
-
-
+$ curl -XPOST -H "Accept: application/json" -H 'Content-Type: application/json' \
+    -d '{"message": "Hello", "username": "..."}' \
+    http://localhost:8082/statuses
 Anatomy of &micro;Framework
 ---------------------------
 
