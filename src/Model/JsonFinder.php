@@ -28,7 +28,8 @@ class JsonFinder implements FinderInterface
     
     public function add($user,$message)
     {
-        $this->bdd[count(self::findAll()) + 20] = array('user' => $user,'message' => $message );
+        $id = $this->getMaxId()+1;
+        $this->bdd[$id] = array('id'=> $id, 'user' => $user,'message' => $message );
         self::persist();
     }
     public function delete($id)
@@ -43,11 +44,11 @@ class JsonFinder implements FinderInterface
         file_put_contents($this->filePath, json_encode($this->bdd));
     }
 
-    // Error undefind
+
     private function getMaxId(){
         $max=0;
-        foreach($this->bdd as $value){
-            if($value > $max) $max=$value;
+        foreach($this->bdd as $status){
+            if($status['id']>$max) $max=$status['id'];
         }
         return $max;
     }

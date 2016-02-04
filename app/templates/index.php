@@ -20,11 +20,13 @@ if(empty($parameters['status']) || count($parameters['status'])<=0){
 }
 else {
     echo "<table>";
-    foreach ($parameters['status'] as $id => $status) {
+    echo "<tr><td>ID</td><td>User</td><td>Message</td></tr>";
+    foreach ($parameters['status'] as $status) {
         echo "<tr>";
+        echo "<td>".$status['id']."</td>";
         echo "<td><strong>" . $status['user'] . "</strong></td>";
         echo "<td>" . $status['message'] . "</td>";
-        echo "<td><form action='/status/".$id."' method='POST'><a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a></form></td>";
+        echo "<td><form action='/status/".$status['id']."' method='POST'><a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a></form></td>";
         echo "</tr>";
     }
     echo "</table>";

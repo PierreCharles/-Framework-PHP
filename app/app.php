@@ -1,11 +1,12 @@
 <?php
 
-require __DIR__ . '/../autoload.php';
+//require __DIR__ . '/../autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
+
 
 use Exception\HttpException;
 use Http\Request;
 use Model\JsonFinder;
-
 
 // Config
 $debug = true;
@@ -23,7 +24,6 @@ $app->get('/', function () use ($app) {
     return $app->render('index.php', ['status' => $finder->findAll()]);
 });
 
-
 $app->get('/status', function () use ($app) {
     $finder = new JsonFinder();
     return $app->render('index.php', ['status' => $finder->findAll()]);
@@ -37,8 +37,7 @@ $app->get('/status/(\d+)', function (Request $request, $id) use ($app) {
     return $app->render('status.php', ['status' => $status]);
 });
 
-
- // Matches if the HTTP method is POST
+// Matches if the HTTP method is POST
 $app->post('/', function () use ($app) {
     return $app->render('index.php');
 });
@@ -50,7 +49,6 @@ $app->post('/status', function (Request $request) use ($app) {
     $finder->add($login, $message);
     $app->redirect('/status');
 });
-
 
  // Matches if the HTTP method is PUT
 $app->put('/', function () use ($app) {
@@ -66,6 +64,5 @@ $app->delete('/status/(\d+)', function (Request $request, $id) use ($app) {
     $finder->delete($id);
     $app->redirect('/status');
 });
-
 
 return $app;
