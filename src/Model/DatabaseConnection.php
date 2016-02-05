@@ -1,11 +1,15 @@
 <?php
-class connexionBD {
+
+namespace Model;
+
+class DatabaseConnection {
     /**
      * Database connection
      * $host        = Host
      * $base        = Database name
      * $login       = Database username
      * $mdp         = Database password
+     * $statement   = a statement
      */
     private
         $dbh=null,
@@ -16,12 +20,12 @@ class connexionBD {
         $host="localhost";
 
     // Constructor of a database connection
-    private function __construct() {
+    public function __construct() {
         self::$dbh = new PDO('mysql:host='.$this->host.';dbname='.$this->base.'',$this->login,$this->mdp);
     }
 
-    // Méthode de préparation et d'éxéution d'une requete. -> Remplace les ? de la requete.
-    public function prepareAndExecuterQuerySelect($requete, $param){
+    // Metho to prepare and execute a query
+    public function prepareAndExecuteQuerySelect($requete, $param){
         self::$statement = self::$dbh->prepare($requete);
         if (isset($param) && $param!=null) {
             for ($i = 1; $i <= count($param); $i++) {
@@ -31,11 +35,11 @@ class connexionBD {
         self::$statement->execute();
     }
 
-    // Methode de récuperation des resultats.
+    // get result
     public static function getResult(){
         return self::$statement->fetchAll();
     }
-    // Methode de destruction du statement.
+    // Destroy statement
     public static function destroyQueryResults(){
         self::$statement->closeCursor();
         self::$statement=NULL;
