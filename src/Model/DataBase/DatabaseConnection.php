@@ -1,8 +1,10 @@
 <?php
 
-namespace Model;
+namespace Model\DataBase;
 
-class DatabaseConnection {
+use PDO;
+
+class DatabaseConnection extends PDO {
     /**
      * Database connection
      * $host        = Host
@@ -12,7 +14,6 @@ class DatabaseConnection {
      * $statement   = a statement
      */
     private
-        $dbh=null,
         $statement,
         $base = "TweetTweet",
         $login="root",
@@ -21,27 +22,28 @@ class DatabaseConnection {
 
     // Constructor of a database connection
     public function __construct() {
-        self::$dbh = new PDO('mysql:host='.$this->host.';dbname='.$this->base.'',$this->login,$this->mdp);
+        parent::__construct('mysql:host='.$this->host.';dbname='.$this->base,$this->login,$this->mdp);
     }
 
     // Metho to prepare and execute a query
-    public function prepareAndExecuteQuerySelect($requete, $param){
-        self::$statement = self::$dbh->prepare($requete);
+    public function prepareAndExecuteQuery($requete, $param){
+        $this->statement = $this->prepare($requete);
         if (isset($param) && $param!=null) {
             for ($i = 1; $i <= count($param); $i++) {
-                self::$statement->bindParam($i, $param[$i][0], $param[$i][1]);
+                $this->statement->bindParam($i, $param[$i][0], $param[$i][1]);
             }
         }
-        self::$statement->execute();
+        $this->statement->execute();
     }
 
     // get result
-    public static function getResult(){
-        return self::$statement->fetchAll();
+    public function getResult(){
+        return $this->statement->fetchAll();
     }
+
     // Destroy statement
-    public static function destroyQueryResults(){
-        self::$statement->closeCursor();
-        self::$statement=NULL;
+    public function destroyQueryResults(){
+        $this->statement->closeCursor();
+        $this->statement=NULL;
     }
 }

@@ -6,9 +6,10 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Exception\HttpException;
 use Http\Request;
-use Model\JsonFinder;
+use Model\Finder\JsonFinder;
 use Http\JsonResponse;
-use Model\DatabaseConnection;
+use Model\DataBase\DatabaseConnection;
+use Model\DataMapper\StatusMapper;
 
 // Config
 $debug = true;
@@ -17,21 +18,19 @@ $app = new \App(new View\TemplateEngine(
     __DIR__ . '/templates/'
 ), $debug);
 
-
+$connection = new DatabaseConnection();
+$statusMapper = new StatusMapper($conn);
+$statusFinder = new StatusFinder($conn);
 $finder = new JsonFinder();
-$bdd = new DatabaseConnection();
 
  // Matches if the HTTP method is GET
 $app->get('/', function (Request $request) use ($app, $finder) {
-    $data = array('status' => $finder->findAll());
-    if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse($data);
-    }
-    return $app->render('index.php', $data);
+    $app->redirect('/statuses');
 });
 
 // Matches if the HTTP method is GET
 $app->get('/statuses', function (Request $request) use ($app, $finder) {
+    //$data = array('status' => $finder->findAll());
     $data = array('status' => $finder->findAll());
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse($data);
