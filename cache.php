@@ -10,4 +10,7 @@
   'Model/FinderInterface' => 'Model/FinderInterface.php',
   'Model/JsonFinder' => 'Model/JsonFinder.php',
   'Http/Request' => 'Http/Request.php',
+  'Model/DataBase/DatabaseConnection' => 'Model/DataBase/DatabaseConnection.php',
+  'Model/Finder/FinderInterface' => 'Model/Finder/FinderInterface.php',
+  'Model/Finder/StatusFinder' => 'Model/Finder/StatusFinder.php',
 );

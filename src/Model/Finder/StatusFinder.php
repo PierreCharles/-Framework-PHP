@@ -2,7 +2,6 @@
 
 namespace Model\Finder;
 
-use Model\DataMapper\StatusMapper;
 use Model\DataBase\DatabaseConnection;
 use Model\Entity\Status;
 use PDO;
@@ -11,12 +10,10 @@ class StatusFinder implements FinderInterface
 {
 
     private $connection;
-    private $statusMapper;
 
     function __construct(DatabaseConnection $connection)
     {
         $this->connection = $connection;
-        $this->statusMapper = new StatusMapper($connection);
     }
 
     public function findAll()
@@ -27,7 +24,7 @@ class StatusFinder implements FinderInterface
         $this->connection->destroyQueryResults();
         $statuses = array();
         foreach ($results as $status) {
-            $statuses[] = new Status($status['status_id'], $status['status_message'], $status['status_user_id'], $status['status_date']);
+            $statuses[] = new Status($status['status_id'], $status['status_user_id'], $status['status_message'], $status['status_date']);
         }
         return $statuses;
     }

@@ -1,6 +1,13 @@
 
 <h1>Welcome on TweetTweet</h1>
 
+<?php
+
+    if($parameters['userName']!= "NoUser") {
+        echo "<a href='/logout'>Disconnect</a><br/><br/>";
+    }
+?>
+
 <form action="statuses" method="POST">
     <input type="hidden" name="_method" value="POST">
 
@@ -20,7 +27,7 @@ if(empty($parameters['status']) || count($parameters['status'])<=0){
 }
 else {
     echo "<table>";
-    echo "<tr><td>ID</td><td>User</td><td>Message</td></tr><td>Date</td>";
+    echo "<tr><td>ID</td><td>User</td><td>Message</td><td>Date</td></tr>";
     foreach ($parameters['status'] as $status) {
         echo "<tr>";
         echo "<td>".$status->getId()."</td>";
