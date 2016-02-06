@@ -26,14 +26,15 @@ class DatabaseConnection extends PDO {
     }
 
     // Metho to prepare and execute a query
-    public function prepareAndExecuteQuery($requete, $param){
-        $this->statement = $this->prepare($requete);
+    public function prepareAndExecuteQuery($request, $param){
+        $this->statement = $this->prepare($request);
         if (isset($param) && $param!=null) {
             for ($i = 1; $i <= count($param); $i++) {
                 $this->statement->bindParam($i, $param[$i][0], $param[$i][1]);
             }
         }
         $this->statement->execute();
+        //var_dump($this->statement->errorInfo());
     }
 
     // get result

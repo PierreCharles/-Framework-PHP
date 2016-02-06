@@ -42,18 +42,4 @@ class StatusFinder implements FinderInterface
         return new Status($result['status_id'], $result['status_message'], $result['status_user_id'], $result['status_date']);
     }
 
-    public function addStatus($user, $message)
-    {
-        $status = new Status(null, $user, $message, date("Y-m-d H:i:s"));
-        $this->statusMapper->persist($status);
-    }
-
-    public function deleteStatus($id)
-    {
-        echo $id;
-        if (!$this->findOneById($id)) {
-            return -1;
-        }
-        $this->statusMapper->remove($id);
-    }
 }

@@ -8,6 +8,8 @@ use Http\Request;
 use Model\Finder\StatusFinder;
 use Http\JsonResponse;
 use Model\DataBase\DatabaseConnection;
+use Model\DataMapper\StatusMapper;
+use Model\Entity\Status;
 
 
 // Config
@@ -15,6 +17,7 @@ $debug = true;
 $connection = new DatabaseConnection();
 $finder = new StatusFinder($connection);
 //$finder = new JsonFinder();
+$mapper = new StatusMapper($connection);
 
 /**
  * Index
@@ -56,9 +59,10 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $finder
 });
 
 // Matches if the HTTP method is POST -> /statutes
-$app->post('/statuses', function (Request $request) use ($app, $finder) {
-    $finder->addStatus(htmlspecialchars($request->getParameter('user')),
-        htmlspecialchars($request->getParameter('message')));
+$app->post('/statuses', function (Request $request) use ($app, $finder, $mapper) {
+    $status = new Status(null, htmlspecialchars($request->getParameter('user')),
+        htmlspecialchars($request->getParameter('message')), date("Y-m-d H:i:s"));
+    $mapper->persist($status);
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse("statuses/" . count($finder->findAll()), 201);
     }
@@ -71,11 +75,12 @@ $app->put('/', function () use ($app) {
 });
 
  // Matches if the HTTP method is DELETE
-$app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app, $finder) {
+$app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app, $finder, $mapper) {
+
     if (null == $finder->findOneById($id)) {
         throw new HttpException(404, 'Not Found');
     }
-    $finder->deleteStatus($id);
+    $mapper->remove($id);
     $app->redirect('/statuses');
 });
 
