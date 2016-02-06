@@ -15,7 +15,7 @@ class StatusMapper{
     }
 
     public function persist(Status $status) {
-        $request = "INSERT INTO statuses(status_message,status_user_id,status_date) value(?,?,?)";
+        $request = "INSERT INTO statuses(status_message,status_user_name,status_date) value(?,?,?)";
         $param = array(
             '1' => array($status->getMessage(), PDO::PARAM_STR),
             '2' => array($status->getUser(), PDO::PARAM_STR),

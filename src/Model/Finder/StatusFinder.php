@@ -24,7 +24,7 @@ class StatusFinder implements FinderInterface
         $this->connection->destroyQueryResults();
         $statuses = array();
         foreach ($results as $status) {
-            $statuses[] = new Status($status['status_id'], $status['status_user_id'], $status['status_message'], $status['status_date']);
+            $statuses[] = new Status($status['status_id'], $status['status_user_name'], $status['status_message'], $status['status_date']);
         }
         return $statuses;
     }
@@ -36,7 +36,7 @@ class StatusFinder implements FinderInterface
         $this->connection->prepareAndExecuteQuery($request, $param);
         $result = $this->connection->getResult()[0];
         $this->connection->destroyQueryResults();
-        return new Status($result['status_id'], $result['status_message'], $result['status_user_id'], $result['status_date']);
+        return new Status($result['status_id'], $result['status_message'], $result['status_user_name'], $result['status_date']);
     }
 
 }

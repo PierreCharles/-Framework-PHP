@@ -4,6 +4,7 @@ use Exception\ExceptionHandler;
 use Exception\HttpException;
 use Routing\Route;
 use View\TemplateEngineInterface;
+use \Dispatcher\EventDispatcherTrait;
 use Http\Request;
 use Http\Response;
 
@@ -13,6 +14,8 @@ class App
     const POST   = 'POST';
     const PUT    = 'PUT';
     const DELETE = 'DELETE';
+
+    use EventDispatcherTrait;
 
     /**
      * @var array
@@ -68,7 +71,7 @@ class App
         $this->registerRoute(self::GET, $pattern, $callable);
         return $this;
     }
-    
+
     /**
      * @param string   $pattern
      * @param callable $callable
@@ -80,7 +83,7 @@ class App
         $this->registerRoute(self::POST, $pattern, $callable);
         return $this;
     }
-    
+
     /**
      * @param string   $pattern
      * @param callable $callable
@@ -92,7 +95,7 @@ class App
         $this->registerRoute(self::PUT, $pattern, $callable);
         return $this;
     }
-    
+
     /**
      * @param string   $pattern
      * @param callable $callable
@@ -111,7 +114,7 @@ class App
 		if(null === $request){
 			$request = Request::createFromGlobals();
 		}
-		
+
 		$method = $request->getMethod();
 		$uri = $request->getUri();
 
@@ -142,7 +145,7 @@ class App
             throw new HttpException(500, null, $e);
         }
     }
-    
+
     public function redirect($destination, $statusCode = 302)
     {
         http_response_code($statusCode);

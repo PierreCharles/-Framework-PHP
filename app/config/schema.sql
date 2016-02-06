@@ -15,12 +15,7 @@ CREATE TABLE USER(
 --
 CREATE TABLE STATUSES(
   status_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  status_message VARCHAR(500) NOT NULL,
-  status_user_id INT,
+  status_message VARCHAR(140) NOT NULL,
+  status_user_name VARCHAR(100),
   status_date DATE NOT NULL
 );
-
-
-
-
-  -- FOREIGN KEY (status_user_id) REFERENCES USER(user_id) ON DELETE CASCADE

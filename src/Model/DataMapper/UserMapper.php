@@ -1,6 +1,7 @@
 <?php
 
 namespace Model\DataMapper;
+
 use Model\Entity\User;
 use Model\DataBase\DatabaseConnection;
 use PDO;

@@ -16,6 +16,8 @@ use Model\DataMapper\UserMapper;
 use Model\Entity\Status;
 use Model\Entity\User;
 
+
+
 // Config
 $debug = true;
 $connection = new DatabaseConnection();
@@ -68,14 +70,17 @@ $app->get('/logout', function() use ($app) {
 
 // Matches if the HTTP method is GET -> /statuses
 $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
-    $data = array('status' => $statusFinder->findAll());
-    if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse($data);
+    $data = array('status' => $statusFinder->findAll(), 'userName'=> null);
+    if(count($data['status'])==0) {
+        return new Response("",204);
+    }
+    if($request->guessBestFormat()==="json") {
+        return new Response(json_encode($data),200);
     }
     if(isset($_SESSION['userName'])) {
-        array_push($data,'userName', $_SESSION['userName']);
+        $data['userName'] = $_SESSION['userName'];
     } else {
-        array_push($data,'userName', "NoUser");
+        $data['userName'] = "Unknown";
     }
     return $app->render('index.php', $data);
 });
@@ -88,15 +93,15 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
     }
     $data = array('status' => $status);
     if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse($data);
+        return new JsonResponse($data, 200);
     }
     return $app->render('status.php', $data);
 });
 
 
 // Matches if the HTTP method is POST -> /statutes
-$app->post('/statuses', function (Request $request) use ($app, $statusFinder, $statusMapper) {
-    $status = new Status(null, htmlspecialchars($request->getParameter('user')),
+$app->post('/statuses', function (Request $request) use ($app, $statusFinder, $statusMapper, $userMapper) {
+    $status = new Status(null, htmlspecialchars($request->getParameter('userName')),
         htmlspecialchars($request->getParameter('message')), date("Y-m-d H:i:s"));
     $statusMapper->persist($status);
     if ($request->guessBestFormat() === 'json') {
@@ -128,6 +133,8 @@ $app->post('/login', function (Request $request) use ($app,$userFinder) {
     $_SESSION['id'] = $user->getUserId();
     $_SESSION['userName'] = $user->getUserName();
     $_SESSION['is_connected'] = true;
+
+    $app->redirect('/statuses');
 });
 
 
@@ -143,7 +150,7 @@ $app->post('/register', function (Request $request) use ($app,$userMapper) {
         return $app->render('register.php',array('error' => "Invalid parameters", 'login' => $userName));
     }
     $userMapper->persist(new User(null,$userName, password_hash($userPassword,PASSWORD_DEFAULT)));
-    $app->redirect('/login',201);
+    $app->redirect('/login');
 });
 
 
@@ -161,6 +168,5 @@ $app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app, $sta
     $statusMapper->remove($id);
     $app->redirect('/statuses');
 });
-
 
 return $app;
