@@ -3,35 +3,35 @@
 //require __DIR__ . '/../autoload.php';
 require __DIR__ . '/../vendor/autoload.php';
 
-
 use Exception\HttpException;
 use Http\Request;
 use Model\Finder\JsonFinder;
+use Model\Finder\StatusFinder;
 use Http\JsonResponse;
 use Model\DataBase\DatabaseConnection;
 use Model\DataMapper\StatusMapper;
 
 // Config
 $debug = true;
+$connection = new DatabaseConnection();
+$statusMapper = new StatusMapper($connection);
+$statusFinder = new StatusFinder($connection);
+$finder = new JsonFinder();
+
+
 
 $app = new \App(new View\TemplateEngine(
     __DIR__ . '/templates/'
 ), $debug);
 
-$connection = new DatabaseConnection();
-$statusMapper = new StatusMapper($conn);
-$statusFinder = new StatusFinder($conn);
-$finder = new JsonFinder();
-
  // Matches if the HTTP method is GET
-$app->get('/', function (Request $request) use ($app, $finder) {
+$app->get('/', function () use ($app, $finder) {
     $app->redirect('/statuses');
 });
 
 // Matches if the HTTP method is GET
-$app->get('/statuses', function (Request $request) use ($app, $finder) {
-    //$data = array('status' => $finder->findAll());
-    $data = array('status' => $finder->findAll());
+$app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
+    $data = array('status' => $statusFinder->findAll());
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse($data);
     }
@@ -39,8 +39,8 @@ $app->get('/statuses', function (Request $request) use ($app, $finder) {
 });
 
 // Matches if the HTTP method is GET
-$app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $finder) {
-    if (null === $status = $finder->findOneById($id)) {
+$app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $statusFinder) {
+    if (null === $status = $statusFinder->findOneById($id)) {
         throw new HttpException(404);
     }
     $data = array('status' => $status);
@@ -56,11 +56,11 @@ $app->post('/', function () use ($app) {
 });
 
 // Matches if the HTTP method is POST
-$app->post('/statuses', function (Request $request) use ($app, $finder) {
-    $finder->add(htmlspecialchars($request->getParameter('user')),
+$app->post('/statuses', function (Request $request) use ($app, $statusFinder) {
+    $statusFinder->addStatus(htmlspecialchars($request->getParameter('user')),
         htmlspecialchars($request->getParameter('message')));
     if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse("statuses/" . count($finder->findAll()), 201);
+        return new JsonResponse("statuses/" . count($statusFinder->findAll()), 201);
     }
     $app->redirect('/statuses');
 });
@@ -71,11 +71,11 @@ $app->put('/', function () use ($app) {
 });
 
  // Matches if the HTTP method is DELETE
-$app->delete('/statuses/(\d+)', function ($id) use ($app, $finder) {
-    if (null == $finder->findOneById($id)) {
+$app->delete('/statuses/(\d+)', function ($id) use ($app, $statusFinder) {
+    if (null == $statusFinder->findOneById($id)) {
         throw new HttpException(404, 'Not Found');
     }
-    $finder->delete($id);
+    $statusFinder->deleteStatus($id);
     $app->redirect('/statuses');
 });
 

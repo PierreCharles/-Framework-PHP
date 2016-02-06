@@ -32,13 +32,13 @@ class JsonFinder implements FinderInterface
     {
         $id = $this->getMaxId()+1;
         $this->bdd[$id] = array('id'=> $id, 'user' => $user,'message' => $message );
-        self::persist();
+        $this->persist();
     }
     public function delete($id)
     {
         if (isset($this->bdd[$id])) {
             unset($this->bdd[$id]);
-            self::persist();
+            $this->persist();
         }
     }
     private function persist()

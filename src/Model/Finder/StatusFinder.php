@@ -1,5 +1,7 @@
 <?php
 
+namespace Model\Finder;
+
 use Model\DataMapper\StatusMapper;
 use Model\DataBase\DatabaseConnection;
 use Model\Entity\Status;
