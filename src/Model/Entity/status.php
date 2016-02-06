@@ -8,7 +8,7 @@ class Status {
 
     private $user,$message,$date;
 
-    public function __construct($id,$user, $message, $date)
+    public function __construct($id, $user, $message, $date)
     {
         $this->id=$id;
         $this->user=$user;
@@ -33,7 +33,7 @@ class Status {
 
     public function getDate()
     {
-        return $this->date;
+        return $this->date->format('Y-m-d H:i');
     }
 
 }

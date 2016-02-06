@@ -20,13 +20,16 @@ if(empty($parameters['status']) || count($parameters['status'])<=0){
 }
 else {
     echo "<table>";
-    echo "<tr><td>ID</td><td>User</td><td>Message</td></tr>";
+    echo "<tr><td>ID</td><td>User</td><td>Message</td></tr><td>Date</td>";
     foreach ($parameters['status'] as $status) {
         echo "<tr>";
-        echo "<td>".$status['id']."</td>";
-        echo "<td><strong>" . $status['user'] . "</strong></td>";
-        echo "<td>" . $status['message'] . "</td>";
-        echo "<td><form action='/statuses/".$status['id']."' method='POST'><a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a></form></td>";
+        echo "<td>".$status->getId()."</td>";
+        echo "<td><strong>" . $status->getUser() . "</strong></td>";
+        echo "<td>" . $status->getMessage() . "</td>";
+        echo "<td>" . $status->getDate() . "</td>";
+        echo "<td><form action='/statuses/".$status->getId()."' method='POST'>";
+        echo "<a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a>";
+        echo "</form></td>";
         echo "</tr>";
     }
     echo "</table>";

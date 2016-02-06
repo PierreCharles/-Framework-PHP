@@ -5,10 +5,10 @@ if(empty($parameters['status'])){
 else {
     echo "<table>";
     echo "<tr>";
-    echo "<td><strong>" . $parameters['status']['id'] . "</strong></td>";
-    echo "<td><strong>" . $parameters['status']['user'] . "</strong></td>";
-    echo "<td>" . $parameters['status']['message'] . "</td>";
-    echo "<td><form action='/statuses/". $parameters['status']['id']."' method='POST'><a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a></form></td>";
+    echo "<td><strong>" . $parameters['status']->getId() . "</strong></td>";
+    echo "<td><strong>" . $parameters['status']->getMessage() . "</strong></td>";
+    echo "<td>" . $parameters['status']->getUser() . "</td>";
+    echo "<td><form action='/statuses/". $parameters['status']->getId()."' method='POST'><a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a></form></td>";
     echo "</tr>";
     echo "</table>";
 }

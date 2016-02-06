@@ -15,7 +15,8 @@ class StatusMapper{
     }
 
     public function persist(Status $status) {
-        $request = "INSERT INTO statuses(message,user,date) value(?,?,?)";
+        $request = "INSERT INTO statuses(status_message,status_user_id,status_date) value(?,?,?)";
+        echo $request;
         $param = array(
             '1' => array($status->getMessage(), PDO::PARAM_STR),
             '2' => array($status->getUser(), PDO::PARAM_STR),
@@ -25,7 +26,7 @@ class StatusMapper{
     }
 
     public function remove($id) {
-        $request = "DELETE FROM statuses WHERE id=?";
+        $request = "DELETE FROM statuses WHERE status_id=?";
         $param = array('1'=>array($id, PDO::PARAM_INT));
         $this->connection->prepareAndExecuteQuery($request, $param);
     }
