@@ -69,19 +69,23 @@ $app->get('/logout', function() use ($app) {
 
 // Matches if the HTTP method is GET -> /statuses
 $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
+
     $data = array('status' => $statusFinder->findAll(), 'userName'=> null);
     if(count($data['status'])==0) {
-        return new Response("",204);
+        $response = new Response("",204);
+        $response->send();
     }
     if($request->guessBestFormat()==="json") {
-        return new Response(json_encode($data),200);
+        $response = new Response(json_encode($data),200);
+        $response->send();
     }
     if(isset($_SESSION['userName'])) {
         $data['userName'] = $_SESSION['userName'];
     } else {
         $data['userName'] = "Unknown";
     }
-    $app->render('index.php', $data);
+
+    return $app->render('index.php', $data);
 });
 
 
