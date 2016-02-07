@@ -70,7 +70,7 @@ $app->get('/logout', function() use ($app) {
 // Matches if the HTTP method is GET -> /statuses
 $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
 
-    $data = array('status' => $statusFinder->findAll(), 'userName'=> null);
+    $data = array('status' => $statusFinder->findAll(), 'userName'=> null, 'title'=> "Statuses");
     if(count($data['status'])==0) {
         $response = new Response("",204);
         $response->send();
@@ -110,7 +110,7 @@ $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $s
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse("statuses/" . count($statusFinder->findAll()), 201);
     }
-    $app->redirect('/statuses');
+    return $app->redirect('/statuses');
 });
 
 
@@ -137,7 +137,7 @@ $app->post('/login', function (Request $request) use ($app,$userFinder) {
     $_SESSION['userName'] = $user->getUserName();
     $_SESSION['is_connected'] = true;
 
-    $app->redirect('/statuses');
+    return $app->redirect('/statuses');
 });
 
 
@@ -153,7 +153,7 @@ $app->post('/register', function (Request $request) use ($app,$userMapper) {
         return $app->render('register.php',array('error' => "Invalid parameters", 'login' => $userName));
     }
     $userMapper->persist(new User(null,$userName, password_hash($userPassword,PASSWORD_DEFAULT)));
-    $app->redirect('/login');
+    return $app->redirect('/login');
 });
 
 
@@ -169,7 +169,7 @@ $app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app, $sta
         throw new HttpException(404, 'Not Found');
     }
     $statusMapper->remove($id);
-    $app->redirect('/statuses');
+    return $app->redirect('/statuses');
 });
 
 

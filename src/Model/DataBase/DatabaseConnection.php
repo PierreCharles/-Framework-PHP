@@ -15,9 +15,9 @@ class DatabaseConnection extends PDO {
      */
     private
         $statement,
-        $base = "pierre",
-        $login="uframework",
-        $mdp="p4ssw0rd",
+        $base = "TweetTweet",
+        $login="root",
+        $mdp="",
         $host="localhost";
 
     // Constructor of a database connection

@@ -1,4 +1,5 @@
-<?php
+<?php include '/includes/header.php';
+
 if(empty($parameters['status'])){
     echo "<h2>No status posted with this ID yet</h2>";
 }
