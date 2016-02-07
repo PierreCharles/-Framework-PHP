@@ -15,7 +15,6 @@ use Model\DataMapper\StatusMapper;
 use Model\DataMapper\UserMapper;
 use Model\Entity\Status;
 use Model\Entity\User;
-use Validation\Validation;
 
 
 // Config
@@ -82,7 +81,7 @@ $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
     } else {
         $data['userName'] = "Unknown";
     }
-    return $app->render('index.php', $data);
+    $app->render('index.php', $data);
 });
 
 
@@ -167,40 +166,6 @@ $app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app, $sta
     }
     $statusMapper->remove($id);
     $app->redirect('/statuses');
-});
-
-
-
-
-$app->addListener('process.before', function(Request $request) use ($app) {
-
-    session_start();
-
-    $allowed = [
-        '/login' => [ Request::GET, Request::POST ],
-        '/statuses/(\d+)' => [ Request::GET ],
-        '/statuses' => [ Request::GET, Request::POST ],
-        '/register' => [ Request::GET, Request::POST ],
-        '/' => [ Request::GET ],
-    ];
-
-    if (isset($_SESSION['is_connected'])
-        && true === $_SESSION['is_connected']) {
-        return;
-    }
-
-    foreach ($allowed as $pattern => $methods) {
-        if (preg_match(sprintf('#^%s$#', $pattern), $request->getUri())
-            && in_array($request->getMethod(), $methods)) {
-            return;
-        }
-    }
-    switch ($request->guessBestFormat()) {
-        case 'json':
-            throw new HttpException(401);
-    }
-
-        $app->redirect('/login');
 });
 
 

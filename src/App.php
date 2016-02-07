@@ -4,7 +4,6 @@ use Exception\ExceptionHandler;
 use Exception\HttpException;
 use Routing\Route;
 use View\TemplateEngineInterface;
-use \Dispatcher\EventDispatcherTrait;
 use Http\Request;
 use Http\Response;
 
@@ -14,8 +13,6 @@ class App
     const POST   = 'POST';
     const PUT    = 'PUT';
     const DELETE = 'DELETE';
-
-    use EventDispatcherTrait;
 
     /**
      * @var array
