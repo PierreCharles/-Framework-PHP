@@ -90,6 +90,9 @@ class Route
         return $this->arguments;
     }
 
+    /**
+     * @return string
+     */
     private function compilePattern()
     {
         return sprintf('#^%s$#', $this->pattern);

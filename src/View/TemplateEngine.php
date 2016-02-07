@@ -31,6 +31,10 @@ class TemplateEngine implements TemplateEngineInterface
         return ob_get_clean();
     }
 
+    /**
+     * @param $file
+     * @return bool
+     */
     private function isAbsolutePath($file)
     {
         if (strspn($file, '/\\', 0, 1)

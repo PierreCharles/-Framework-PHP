@@ -15,6 +15,7 @@ use Model\DataMapper\StatusMapper;
 use Model\DataMapper\UserMapper;
 use Model\Entity\Status;
 use Model\Entity\User;
+use Validation\Validation;
 
 
 // Config
@@ -104,8 +105,9 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
 
 // Matches if the HTTP method is POST -> /statutes
 $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $statusMapper, $userMapper) {
-    $status = new Status(null, htmlspecialchars($request->getParameter('userName')),
-        htmlspecialchars($request->getParameter('message')), date("Y-m-d H:i:s"));
+    $message = htmlspecialchars($request->getParameter('message'));
+    $user = htmlspecialchars($request->getParameter('userName'));
+    $status = new Status(null, $user, $message, date("Y-m-d H:i:s"));
     $statusMapper->persist($status);
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse("statuses/" . count($statusFinder->findAll()), 201);

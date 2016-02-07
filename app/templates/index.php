@@ -7,7 +7,6 @@
         <?php if(isset($parameters['userName']) && $parameters['userName']!="Unknown" ) {
             echo "<input type = 'hidden' name = 'userName' value='".$parameters['userName']."'>";
             }else {
-                echo "<label for='user' > Your Name </label >";
                 echo "<input type = 'text' name = 'userName' placeholder='Unregister User'>";
             }
         ?>
