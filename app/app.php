@@ -119,20 +119,17 @@ $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $s
 // Matches if the HTTP method is POST -> /login
 $app->post('/login', function (Request $request) use ($app,$userFinder) {
 
-    $userName = $request->getParameter('userName');
-    $userPassword = $request->getParameter('userPassword');
+    $user = $request->getParameter('user');
+    $password = $request->getParameter('password');
 
-    if(!isset($userName) || !isset($userPassword)) {
-        $response = new Response("Empty Username or password",400);
-        $response->send();
-        return $app->render('login.php',array('error' => "Empty Username or password", 'userName' => $userName));
+    if(Validation::validateConnection($user, $password)) {
+        return $app->render('login.php',array('error' => "Empty Username or password", 'userName' => $user));
     }
-    $user = $userFinder->findOneByUserName($userName);
-
-    if(!password_verify($userPassword, $user->getUserPassword())) {
-        $response = new Response("Bad password",400);
-        $response->send();
-        return $app->render('login.php',array('error' => "Bad password", 'login' => $userName));
+    if(null ==  $user = $userFinder->findOneByUserName($user)){
+        return $app->render('login.php',array('error' => "Unknown login", 'userName' => $user));
+    }
+    if(!password_verify($password, $user->getUserPassword())) {
+        return $app->render('login.php',array('error' => "Bad password", 'userName' => $user));
     }
 
     $_SESSION['id'] = $user->getUserId();
@@ -145,17 +142,17 @@ $app->post('/login', function (Request $request) use ($app,$userFinder) {
 
 // Matches if the HTTP method is POST -> /register
 $app->post('/register', function (Request $request) use ($app,$userMapper) {
-
-    $userName = $request->getParameter('userName');
-    $userPassword = $request->getParameter('userPassword');
-
-    if(!isset($userName) || !isset($userPassword)) {
-        $response = new Response("Invalid parameters",400);
-        $response->send();
-        return $app->render('register.php',array('error' => "Invalid parameters", 'login' => $userName));
+    $user= $request->getParameter('user');
+    $password = $request->getParameter('password');
+    $confirm = $request->getParameter('confirm');
+    $error=Validation::validationRegisterForm($user,$password,$confirm);
+    if($error['nb']>0) {
+        return $app->render('register.php',array('error'=> $error));
     }
-    $userMapper->persist(new User(null,$userName, password_hash($userPassword,PASSWORD_DEFAULT)));
+    $userMapper->persist(new User(null,$user, password_hash($password,PASSWORD_DEFAULT)));
     return $app->redirect('/login');
+
+
 });
 
 

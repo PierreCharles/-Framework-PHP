@@ -21,7 +21,7 @@ class UserFinder{
         $this->connection->prepareAndExecuteQuery($request, $param);
         $result = $this->connection->getResult()[0];
         $this->connection->destroyQueryResults();
-        return new User($result['user_id'], $result['user_name'], $result['user_password']);
+        return !count($result)==0 ? new User($result['user_id'], $result['user_name'], $result['user_password']) : null;
     }
 
     public function findOneByUserName($userName) {
@@ -30,7 +30,7 @@ class UserFinder{
         $this->connection->prepareAndExecuteQuery($request, $param);
         $result = $this->connection->getResult()[0];
         $this->connection->destroyQueryResults();
-        return new User($result['user_id'], $result['user_name'], $result['user_password']);
+        return !count($result)==0 ? new User($result['user_id'], $result['user_name'], $result['user_password']) : null;
     }
 
 }

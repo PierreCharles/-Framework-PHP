@@ -83,6 +83,11 @@
                 padding: 40px;
             }
 
+            h1{
+                text-align : center;
+                color: dodgerblue;
+            }
+
         </style>
     </head>
     <body>

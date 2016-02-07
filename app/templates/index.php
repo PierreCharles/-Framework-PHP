@@ -1,5 +1,6 @@
 <?php include '/includes/header.php'; ?>
 
+<h1>Write a message</h1>
 
 <div class="form">
     <form action="statuses" method="POST">
