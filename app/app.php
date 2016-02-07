@@ -55,6 +55,7 @@ $app->get('/login', function () use ($app) {
 });
 
 
+
 // Matches if the HTTP method is GET -> /register
 $app->get('/register', function () use ($app) {
     return $app->render('register.php');
@@ -142,9 +143,11 @@ $app->post('/login', function (Request $request) use ($app,$userFinder) {
 
 // Matches if the HTTP method is POST -> /register
 $app->post('/register', function (Request $request) use ($app,$userMapper) {
+
     $user= $request->getParameter('user');
     $password = $request->getParameter('password');
     $confirm = $request->getParameter('confirm');
+
     $error=Validation::validationRegisterForm($user,$password,$confirm);
     if($error['nb']>0) {
         return $app->render('register.php',array('error'=> $error));

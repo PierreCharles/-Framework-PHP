@@ -1,4 +1,5 @@
 <?php include '/includes/header.php'; ?>
+<h1>Log in</h1>
 
 <div class="form">
     <form action="/login" method="POST">

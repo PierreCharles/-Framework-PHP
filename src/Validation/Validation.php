@@ -77,8 +77,8 @@ class Validation {
          * Verify captcha with session
          */
        // if ($_SESSION['captcha'] != $captcha) {
-        //    $errors['captcha'] = "Invalid Captcha.";
-       //     $i++;
+       //     $errors['captcha'] = "Invalid Captcha.";
+       //      $i++;
        // }
         $errors['nb'] = $i;
         return $errors;
