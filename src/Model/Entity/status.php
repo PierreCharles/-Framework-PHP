@@ -33,7 +33,10 @@ class Status {
 
     public function getDate()
     {
-        return $this->date->format('Y-m-d H:i');
+        return $this->date->format('Y-m-d H:i:s');
     }
 
+    public function toString(){
+        return "id:".$this->getId().", user:".$this->getUser().",message: ".$this->getMessage().",date: ".$this->getDate();
+    }
 }

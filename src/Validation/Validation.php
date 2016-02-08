@@ -7,8 +7,9 @@ class Validation {
      * Validate connection
      */
     public static function validateConnection($user, $password) {
-        return empty($user) && empty($password) ? false : true;
+        return (empty($user) && empty($password));
     }
+
 
     /*
      * Verify number

@@ -1,22 +1,33 @@
 <?php include '/includes/header.php'; ?>
 
-<h1>Write a message</h1>
+<h1>Write a tweet</h1>
 
 <div class="form">
     <form action="statuses" method="POST">
         <input type="hidden" name="_method" value="POST">
-        <?php if(isset($parameters['userName']) && $parameters['userName']!="Unknown" ) {
-            echo "<input type = 'hidden' name = 'userName' value='".$parameters['userName']."'>";
+        <?php if(isset($parameters['user']) && $parameters['user']!="Unknown" ) {
+            echo "<input type = 'hidden' name = 'user' value='".$parameters['user']."'>";
             }else {
-                echo "<input type = 'text' name = 'userName' placeholder='Unregister User'>";
+                echo "<input type = 'text' name = 'user' value ='Unregister User' placeholder='Unregister User' disabled='disabled'>";
             }
         ?>
+        <textarea name="message" placeholder='Write a message limited to 140 characters...' maxlength="140" onkeyup="left(this.value)"></textarea>
+        <br/>
+        <p><span style="text-align:center; color:dodgerblue;" id="characteres"></span></p>
+        <script type="text/javascript">
+            function left(message){
+                document.getElementById('characteres').innerHTML=140-message.length+" characters again";
+            }
+        </script>
+        <p color="red"><?php if(isset($parameters['error'])) echo "<p style='color:red'>".$parameters['error']; ?></p>
 
-        <textarea name="message" placeholder='Write a message limited to 140 characters...'></textarea>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Tweet">
     </form>
 </div>
 <br/>
+
+
+
 
 <?php
 if(empty($parameters['status']) || count($parameters['status'])<=0){
@@ -30,7 +41,7 @@ if(empty($parameters['status']) || count($parameters['status'])<=0){
         echo "<td><strong>" . $status->getUser() . "</strong></td>";
         echo "<td>" . $status->getMessage() . "</td>";
         echo "<td>" . $status->getDate() . "</td>";
-        if(isset($parameters['userName']) && $parameters['userName']==$status->getUser() ){
+        if(isset($parameters['user']) && $parameters['user']==$status->getUser() &&  $parameters['user']!= 'Unregister User'){
             echo "<td><form action='/statuses/".$status->getId()."' method='POST'>";
             echo "<a href='#'> <input type='hidden' name='_method' value='DELETE'> <input type='submit' value='X'></a>";
             echo "</form></td>";

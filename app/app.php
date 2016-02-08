@@ -71,19 +71,19 @@ $app->get('/logout', function() use ($app) {
 // Matches if the HTTP method is GET -> /statuses
 $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
 
-    $data = array('status' => $statusFinder->findAll(), 'userName'=> null, 'title'=> "Statuses");
+    $data['status'] = $statusFinder->findAll();
+    if(isset($data['user'])) $data['user']= null;
     if(count($data['status'])==0) {
         $response = new Response("",204);
         $response->send();
     }
     if($request->guessBestFormat()==="json") {
-        $response = new Response(json_encode($data),200);
-        $response->send();
+        return new JsonResponse(json_encode($data['status']), 200);
     }
-    if(isset($_SESSION['userName'])) {
-        $data['userName'] = $_SESSION['userName'];
+    if(isset($_SESSION['user'])) {
+        $data['user'] = $_SESSION['user'];
     } else {
-        $data['userName'] = "Unknown";
+        $data['user'] = "Unregister User";
     }
 
     return $app->render('index.php', $data);
@@ -96,7 +96,7 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
         throw new HttpException(404);
     }
     if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse($data['status'], 200);
+        return new JsonResponse(json_encode($data['status']), 200);
     }
     return $app->render('status.php', $data);
 });
@@ -104,12 +104,17 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
 
 // Matches if the HTTP method is POST -> /statutes
 $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $statusMapper, $userMapper) {
-    $message = htmlspecialchars($request->getParameter('message'));
-    $user = htmlspecialchars($request->getParameter('userName'));
-    $status = new Status(null, $user, $message, date("Y-m-d H:i:s"));
+    $data['user']= htmlspecialchars($request->getParameter('user'));
+    $data['message']= htmlspecialchars($request->getParameter('message'));
+    if(empty($data['message'])){
+        $data['error']="Empty status";
+        $data['status'] = $statusFinder->findAll();
+        return $app->render('index.php',$data);
+    }
+    $status = new Status(null,  $data['user'], $data['message'], date("Y-m-d H:i:s"));
     $statusMapper->persist($status);
     if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse("statuses/" . count($statusFinder->findAll()), 201);
+        return new JsonResponse(json_encode("statuses/" . $status->toString()), 201);
     }
     return $app->redirect('/statuses');
 });
@@ -117,44 +122,39 @@ $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $s
 
 // Matches if the HTTP method is POST -> /login
 $app->post('/login', function (Request $request) use ($app,$userFinder) {
-
-    $user = $request->getParameter('user');
-    $password = $request->getParameter('password');
-
-    if(Validation::validateConnection($user, $password)) {
-        return $app->render('login.php',array('error' => "Empty Username or password", 'userName' => $user));
+    $data['user'] = $request->getParameter('user');
+    $data['password'] = $request->getParameter('password');
+    if(Validation::validateConnection($data['user'], $data['password'])) {
+        $data['error'] = "Empty Username or password";
+        return $app->render('login.php', $data);
     }
-    if(null ==  $user = $userFinder->findOneByUserName($user)){
-        return $app->render('login.php',array('error' => "Unknown login", 'userName' => $user));
+    if(null ==  $user = $userFinder->findOneByUserName($data['user'])){
+        $data['error'] = "Unknown user";
+        return $app->render('login.php', $data);
     }
-    if(!password_verify($password, $user->getUserPassword())) {
-        return $app->render('login.php',array('error' => "Bad password", 'userName' => $user));
+    if(!password_verify($data['password'], $user->getUserPassword())) {
+        $data['error'] = "Bad password";
+        return $app->render('login.php',$data);
     }
-
     $_SESSION['id'] = $user->getUserId();
-    $_SESSION['userName'] = $user->getUserName();
+    $_SESSION['user'] = $user->getUserName();
     $_SESSION['is_connected'] = true;
-
     return $app->redirect('/statuses');
 });
 
 
 // Matches if the HTTP method is POST -> /register
 $app->post('/register', function (Request $request) use ($app,$userMapper) {
-
     $data['user'] = $request->getParameter('user');
     $data['password'] = $request->getParameter('password');
     $data['confirm'] = $request->getParameter('confirm');
     $data['captcha'] = $request->getParameter('captcha');
-
     $data['error']=Validation::validationRegisterForm($data['user'],$data['password'],$data['confirm'], $data['captcha']);
     if($data['error']['nb']>0) {
         return $app->render('register.php',$data);
     }
     $userMapper->persist(new User(null,$data['user'], password_hash($data['password'],PASSWORD_DEFAULT)));
     return $app->redirect('/login');
-
-
 });
 
 

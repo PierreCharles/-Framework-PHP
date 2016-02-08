@@ -3,9 +3,18 @@
 
 <div class="form">
     <form action="/login" method="POST">
-        <input type="text" name="userName" placeholder="User name"/>
-        <input type="password" name="userPassword" placeholder="Password" />
-        <p color="red"><?php if(isset($error)) echo $error; ?></p>
+        <?php
+        if(isset($parameters['user']))
+            echo "<input type='text' value='".$parameters['user']."' name='user' placeholder='User name'/>";
+        else
+            echo "<input type='text' name='user' placeholder='User name'/>";
+        if(isset($parameters['password']))
+            echo "<input type='password' name='password' value='".$parameters['password']." placeholder='Password' />";
+        else
+            echo "<input type='password' name='password' placeholder='Password' />";
+        ?>
+        <p color="red"><?php if(isset($parameters['error'])) echo "<p style='color:red'>".$parameters['error']; ?></p>
+
         <input type="submit" value="Connection" />
     </form>
 </div>
