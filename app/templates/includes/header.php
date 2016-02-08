@@ -3,7 +3,8 @@
     <head>
         <title><?php if(isset($data['titre'])) echo $data['title']; else echo "TweetTweet"; ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link href="./style.css" rel="stylesheet">
+        <script type="text/javascript" src="./js/bbcode.js'"></script>
+        <link href="./css/style.css" rel="stylesheet">
     </head>
     <body>
         <?php

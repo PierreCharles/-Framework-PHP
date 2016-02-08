@@ -26,7 +26,7 @@ class Validation {
     /*
      * Validate register form
      */
-    public static function validationRegisterForm($user, $password, $confirm) {
+    public static function validationRegisterForm($user, $password, $confirm, $captcha) {
         $number = preg_match('@[0-9]@', $password);
         $upper = preg_match('@[A-Z]@', $password);
         $lower = preg_match('@[a-z]@', $password);
@@ -76,10 +76,10 @@ class Validation {
         /*
          * Verify captcha with session
          */
-       // if ($_SESSION['captcha'] != $captcha) {
-       //     $errors['captcha'] = "Invalid Captcha.";
-       //      $i++;
-       // }
+       if ($_SESSION['captcha'] != $captcha) {
+           $errors['captcha'] = "Invalid Captcha.";
+           $i++;
+       }
         $errors['nb'] = $i;
         return $errors;
     }

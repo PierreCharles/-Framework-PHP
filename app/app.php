@@ -17,7 +17,6 @@ use Model\Entity\Status;
 use Model\Entity\User;
 use Validation\Validation;
 
-
 // Config
 $debug = true;
 $connection = new DatabaseConnection();
@@ -55,10 +54,10 @@ $app->get('/login', function () use ($app) {
 });
 
 
-
 // Matches if the HTTP method is GET -> /register
 $app->get('/register', function () use ($app) {
-    return $app->render('register.php');
+    $data['user'] = $data['password'] = $data['confirm'] = "";
+    return $app->render('register.php', $data);
 });
 
 
@@ -93,12 +92,11 @@ $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
 
 // Matches if the HTTP method is GET -> /statuses/id
 $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $statusFinder) {
-    if (null === $status = $statusFinder->findOneById($id)) {
+    if (null === $data['status'] = $statusFinder->findOneById($id)) {
         throw new HttpException(404);
     }
-    $data = array('status' => $status);
     if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse($data, 200);
+        return new JsonResponse($data['status'], 200);
     }
     return $app->render('status.php', $data);
 });
@@ -144,15 +142,16 @@ $app->post('/login', function (Request $request) use ($app,$userFinder) {
 // Matches if the HTTP method is POST -> /register
 $app->post('/register', function (Request $request) use ($app,$userMapper) {
 
-    $user= $request->getParameter('user');
-    $password = $request->getParameter('password');
-    $confirm = $request->getParameter('confirm');
+    $data['user'] = $request->getParameter('user');
+    $data['password'] = $request->getParameter('password');
+    $data['confirm'] = $request->getParameter('confirm');
+    $data['captcha'] = $request->getParameter('captcha');
 
-    $error=Validation::validationRegisterForm($user,$password,$confirm);
-    if($error['nb']>0) {
-        return $app->render('register.php',array('error'=> $error));
+    $data['error']=Validation::validationRegisterForm($data['user'],$data['password'],$data['confirm'], $data['captcha']);
+    if($data['error']['nb']>0) {
+        return $app->render('register.php',$data);
     }
-    $userMapper->persist(new User(null,$user, password_hash($password,PASSWORD_DEFAULT)));
+    $userMapper->persist(new User(null,$data['user'], password_hash($data['password'],PASSWORD_DEFAULT)));
     return $app->redirect('/login');
 
 

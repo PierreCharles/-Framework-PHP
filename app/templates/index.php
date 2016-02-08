@@ -11,7 +11,7 @@
                 echo "<input type = 'text' name = 'userName' placeholder='Unregister User'>";
             }
         ?>
-        <br/>
+
         <textarea name="message" placeholder='Write a message limited to 140 characters...'></textarea>
         <input type="submit" value="Submit">
     </form>
@@ -40,5 +40,4 @@ if(empty($parameters['status']) || count($parameters['status'])<=0){
     }
     echo "</table>";
 }
-
 include 'includes/footer.php';
