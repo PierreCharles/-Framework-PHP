@@ -5,7 +5,7 @@
 <div class="form">
     <form action="statuses" method="POST">
         <input type="hidden" name="_method" value="POST">
-        <?php if(isset($parameters['user']) && $parameters['user']!="Unknown" ) {
+        <?php if(isset($_SESSION['user']) && $parameters['user']!="Unknown" ) {
             echo "<input type = 'hidden' name = 'user' value='".$parameters['user']."'>";
             }else {
                 echo "<input type = 'text' name = 'user' value ='Unregister User' placeholder='Unregister User' disabled='disabled'>";

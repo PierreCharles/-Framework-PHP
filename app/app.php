@@ -27,6 +27,7 @@ $userMapper = new UserMapper($connection);
 //$finder = new JsonFinder();
 
 
+
 /**
  * Index
  */
@@ -106,12 +107,13 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
 $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $statusMapper, $userMapper) {
     $data['user']= htmlspecialchars($request->getParameter('user'));
     $data['message']= htmlspecialchars($request->getParameter('message'));
+    if(empty($data['user'])) $data['user']="Unregister User";
     if(empty($data['message'])){
         $data['error']="Empty status";
         $data['status'] = $statusFinder->findAll();
         return $app->render('index.php',$data);
     }
-    $status = new Status(null,  $data['user'], $data['message'], date("Y-m-d H:i:s"));
+    $status = new Status(null, $data['user'], $data['message'], date("Y-m-d H:i:s"));
     $statusMapper->persist($status);
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse(json_encode("statuses/" . $status->toString()), 201);
@@ -172,6 +174,8 @@ $app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app, $sta
     $statusMapper->remove($id);
     return $app->redirect('/statuses');
 });
+
+
 
 
 return $app;

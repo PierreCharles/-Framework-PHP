@@ -7,7 +7,7 @@
     </head>
     <body>
         <?php
-            if(isset($parameters['user']) && $parameters['user']!="Unregister User" ) {
+            if(isset($parameters['user']) && $parameters['user']!="Unregister User" && !empty($parameters['user'])) {
                     echo "<ul><li><a href='/statuses'>TweetTweet</a></li>";
                     echo "<ul style='float:right;list-style-type:none;'>";
                         echo "<li><a href='/logout'>Disconnect</a></li>";

@@ -10,7 +10,6 @@ class Validation {
         return (empty($user) && empty($password));
     }
 
-
     /*
      * Verify number
      */
@@ -32,58 +31,37 @@ class Validation {
         $upper = preg_match('@[A-Z]@', $password);
         $lower = preg_match('@[a-z]@', $password);
         $caraSpecial = preg_match('@[-!$%^&*()_+|~=`{}\[\]:";\'<>?,.\/]@', $user);
-        $i = 0;
+        $errors['nb'] = 0;
 
-        /*
-         * Verify user name
-         */
         if (empty($user)) {
             $errors['user'] = 'Empty user name.';
-            $i++;
+            $errors['nb']++;
         }
         if ($caraSpecial || strlen($user) < 3) {
             $errors['user'] = ' Forbidden specials characters ! > 3 characters';
-            $i++;
+            $errors['nb']++;
         }
-        /*
-         *
-         * Verify first password
-         */
         if (empty($password)) {
             $errors['password'] = 'Invalid password';
-            $i++;
+            $errors['nb']++;
         }
         if (!$upper || !$lower || !$number || strlen($password) < 6) {
             $errors['password'] = "1 number, 1 upper, 1 lower and 6 characters minimum !";
-            $i++;
+            $errors['nb']++;
         }
-
-        /*
-         * Verify confirm password
-         */
         if (empty($confirm)) {
             $errors['confirm'] = 'Invalid password.';
-            $i++;
+            $errors['nb']++;
         }
-
-        /*
-         * Verify equality into two password
-         */
         if ($password !== $confirm) {
             $errors['confirm'] = "Invalid password and confirmation password";
-            $i++;
+            $errors['nb']++;
         }
-
-        /*
-         * Verify captcha with session
-         */
        if ($_SESSION['captcha'] != $captcha) {
            $errors['captcha'] = "Invalid Captcha.";
-           $i++;
+           $errors['nb']++;
        }
-        $errors['nb'] = $i;
         return $errors;
     }
-
 }
 ?>
