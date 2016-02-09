@@ -5,7 +5,7 @@
     <div class="form">
             <form action="/register" method="POST">
 
-                <label>User name : </label>
+                <p><label>User name : </label></p>
                 <?php
                 if (isset($parameters['error']['user'])) {
                     echo "<input name='user' type='text' size='50' value='".$parameters['user']."' style='background-color:indianred;'/>";
@@ -15,7 +15,7 @@
                 }
                 ?>
 
-                <label>Password : </label>
+                <p><label>Password : </label></p>
                 <?php
                 if (isset($parameters['error']['password'])) {
                     echo "<input name='password' type='password' size='50' value='".$parameters['password']."' style='background-color:indianred;'/>";
@@ -25,7 +25,7 @@
                 }
                 ?>
 
-                <label>Confirmation : </label>
+                <p><label>Confirmation : </label></p>
                 <?php
                 if (isset($parameters['error']['confirm'])) {
                     echo "<input name='confirm' type='password' size='50' value='".$parameters['confirm']."' style='background-color:indianred;'/>";

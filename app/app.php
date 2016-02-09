@@ -77,14 +77,7 @@ $app->get('/logout', function() use ($app) {
 
 // Matches if the HTTP method is GET -> /statuses
 $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
-    $data['userName']= htmlspecialchars($request->getParameter('userName'));
-    echo $data['userName'];
     $data['status'] = $statusFinder->findAll();
-    if(isset($data['user'])) $data['user']= null;
-    if(count($data['status'])==0) {
-        $response = new Response("",204);
-        $response->send();
-    }
     if($request->guessBestFormat()==="json") {
         return new JsonResponse(json_encode($data['status']), 200);
     }
@@ -93,7 +86,6 @@ $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
     } else {
         $data['user'] = "Unregister User";
     }
-
     return $app->render('index.php', $data);
 });
 
@@ -112,9 +104,9 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
 
 // Matches if the HTTP method is POST -> /statutes
 $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $statusMapper, $userMapper) {
+    echo htmlspecialchars($request->getParameter('id'));
     $data['user']= htmlspecialchars($request->getParameter('user'));
     $data['message']= htmlspecialchars($request->getParameter('message'));
-    if(empty($data['user'])) $data['user']="Unregister User";
     if(empty($data['message'])){
         $data['error']="Empty status";
         $data['status'] = $statusFinder->findAll();
@@ -125,7 +117,7 @@ $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $s
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse(json_encode("statuses/" . $status), 201);
     }
-    return $app->redirect('/statuses');
+   return $app->redirect('/statuses');
 });
 
 
@@ -137,11 +129,11 @@ $app->post('/login', function (Request $request) use ($app,$userFinder) {
         $data['error'] = "Empty Username or password";
         return $app->render('login.php', $data);
     }
-    if(null ==  $user = $userFinder->findOneByUserName($data['user'])){
+    if(null == $user = $userFinder->findOneByUserName($data['user'])){
         $data['error'] = "Unknown user";
         return $app->render('login.php', $data);
     }
-    if(!password_verify($data['password'], $user->getUserPassword())) {
+    if(!password_verify($data['password'],$user->getUserPassword())) {
         $data['error'] = "Bad password";
         return $app->render('login.php',$data);
     }
