@@ -7,6 +7,9 @@
 
 ### Testing
 -----------
+Php Unit : In a terminal, try this commands:
+
+    php phpunit-5.2.3.phar
 
 In a terminal, try these commands:
 

@@ -51,7 +51,7 @@ $app->get('/statuses/', function () use ($app) {
 
 // Matches if the HTTP method is GET -> /login
 $app->get('/login', function () use ($app) {
-    if($_SESSION['is_connected']){
+    if(isset($_SESSION['is_connected']) && $_SESSION['is_connected']){
         throw new HttpException(403, 'Forbidden');
     }
     return $app->render('login.php');
@@ -60,7 +60,7 @@ $app->get('/login', function () use ($app) {
 
 // Matches if the HTTP method is GET -> /register
 $app->get('/register', function () use ($app) {
-    if($_SESSION['is_connected']){
+    if(isset($_SESSION['is_connected']) && $_SESSION['is_connected']){
         throw new HttpException(403, 'Forbidden');
     }
     $data['user'] = $data['password'] = $data['confirm'] = "";
