@@ -6,9 +6,12 @@ use Routing\Route;
 use View\TemplateEngineInterface;
 use Http\Request;
 use Http\Response;
+use Dispatcher\EventDispatcherTrait;
 
 class App
 {
+    use EventDispatcherTrait;
+
     const GET    = 'GET';
     const POST   = 'POST';
     const PUT    = 'PUT';

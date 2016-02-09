@@ -16,18 +16,16 @@ class UserFinder{
     }
 
     public function findOneById($id) {
-        $request = "SELECT * FROM user WHERE user_id=?";
-        $param=array('1'=>array($id,PDO::PARAM_INT));
-        $this->connection->prepareAndExecuteQuery($request, $param);
+        $request = 'SELECT * FROM user WHERE user_id=:id';
+        $this->connection->prepareAndExecuteQuery($request, ['id'=>$id]);
         $result = $this->connection->getResult()[0];
         $this->connection->destroyQueryResults();
         return !count($result)==0 ? new User($result['user_id'], $result['user_name'], $result['user_password']) : null;
     }
 
-    public function findOneByUserName($userName) {
-        $request = "SELECT * FROM user WHERE user_name=?";
-        $param = array('1'=>array($userName,PDO::PARAM_STR));
-        $this->connection->prepareAndExecuteQuery($request, $param);
+    public function findOneByUserName($user) {
+        $request = 'SELECT * FROM user WHERE user_name=:name';
+        $this->connection->prepareAndExecuteQuery($request, ['name'=>$user]);
         $result = $this->connection->getResult()[0];
         $this->connection->destroyQueryResults();
         return !count($result)==0 ? new User($result['user_id'], $result['user_name'], $result['user_password']) : null;

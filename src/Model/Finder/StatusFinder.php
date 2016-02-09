@@ -18,8 +18,8 @@ class StatusFinder implements FinderInterface
 
     public function findAll()
     {
-        $request = "SELECT * FROM statuses";
-        $this->connection->prepareAndExecuteQuery($request, null);
+        $query = 'SELECT * FROM statuses';
+        $this->connection->prepareAndExecuteQuery($query, []);
         $results = $this->connection->getResult();
         $this->connection->destroyQueryResults();
         $statuses = array();
@@ -31,9 +31,8 @@ class StatusFinder implements FinderInterface
 
     public function findOneById($id)
     {
-        $request = "SELECT * FROM statuses WHERE status_id=?";
-        $param = array('1' => array($id, PDO::PARAM_INT));
-        $this->connection->prepareAndExecuteQuery($request, $param);
+        $query = 'SELECT * FROM statuses WHERE status_id=:id';
+        $this->connection->prepareAndExecuteQuery($query, ['id' => $id]);
         $result = $this->connection->getResult()[0];
         $this->connection->destroyQueryResults();
         return new Status($result['status_id'], $result['status_message'], $result['status_user_name'], $result['status_date']);

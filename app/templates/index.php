@@ -6,7 +6,7 @@
     <form action="statuses" method="POST">
         <input type="hidden" name="_method" value="POST">
         <?php if(isset($_SESSION['user']) && $parameters['user']!="Unknown" ) {
-            echo "<input type = 'hidden' name = 'user' value='".$parameters['user']."'>";
+            echo "<input type = 'text' disabled='disabled' name = 'user' value='".$parameters['user']."'>";
             }else {
                 echo "<input type = 'text' name = 'user' value ='Unregister User' placeholder='Unregister User' disabled='disabled'>";
             }
@@ -26,15 +26,12 @@
 </div>
 <br/>
 
-
-
-
 <?php
 if(empty($parameters['status']) || count($parameters['status'])<=0){
     echo "<h2>No status posted yet</h2>";
 } else {
     echo "<table>";
-    echo "<tr><td>ID</td><td>User</td><td>Message</td><td>Date</td></tr>";
+    echo "<tr><td>ID</td><td>User</td><td>Message</td><td>Date</td><td>Action</td></tr>";
     foreach ($parameters['status'] as $status) {
         echo "<tr>";
         echo "<td>".$status->getId()."</td>";

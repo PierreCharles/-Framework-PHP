@@ -51,12 +51,18 @@ $app->get('/statuses/', function () use ($app) {
 
 // Matches if the HTTP method is GET -> /login
 $app->get('/login', function () use ($app) {
+    if($_SESSION['is_connected']){
+        throw new HttpException(403, 'Forbidden');
+    }
     return $app->render('login.php');
 });
 
 
 // Matches if the HTTP method is GET -> /register
 $app->get('/register', function () use ($app) {
+    if($_SESSION['is_connected']){
+        throw new HttpException(403, 'Forbidden');
+    }
     $data['user'] = $data['password'] = $data['confirm'] = "";
     return $app->render('register.php', $data);
 });
@@ -71,7 +77,8 @@ $app->get('/logout', function() use ($app) {
 
 // Matches if the HTTP method is GET -> /statuses
 $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
-
+    $data['userName']= htmlspecialchars($request->getParameter('userName'));
+    echo $data['userName'];
     $data['status'] = $statusFinder->findAll();
     if(isset($data['user'])) $data['user']= null;
     if(count($data['status'])==0) {
@@ -116,7 +123,7 @@ $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $s
     $status = new Status(null, $data['user'], $data['message'], date("Y-m-d H:i:s"));
     $statusMapper->persist($status);
     if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse(json_encode("statuses/" . $status->toString()), 201);
+        return new JsonResponse(json_encode("statuses/" . $status), 201);
     }
     return $app->redirect('/statuses');
 });
@@ -176,7 +183,37 @@ $app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app, $sta
 });
 
 
+// Firewall
+$app->addListener('process.before', function(Request $req) use ($app) {
 
+    session_start();
+
+    $allowed = [
+        '/login' => [ Request::GET, Request::POST ],
+        '/statuses/(\d+)' => [ Request::GET ],
+        '/statuses' => [ Request::GET, Request::POST ],
+        '/statuses/' => [ Request::GET, Request::POST ],
+        '/register' => [ Request::GET, Request::POST ],
+        '/' => [ Request::GET ],
+    ];
+    if (isset($_SESSION['is_connected'])
+        && true === $_SESSION['is_connected']) {
+        return;
+    }
+    foreach ($allowed as $pattern => $methods) {
+        if (preg_match(sprintf('#^%s$#', $pattern), $req->getUri())
+            && in_array($req->getMethod(), $methods)) {
+            return;
+        }
+    }
+
+    switch ($req->guessBestFormat()) {
+        case 'json':
+            throw new HttpException(401);
+    }
+
+    return $app->redirect('/login');
+});
 
 return $app;
 

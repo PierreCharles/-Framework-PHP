@@ -11,7 +11,7 @@
                     echo "<ul><li><a href='/statuses'>TweetTweet</a></li>";
                     echo "<ul style='float:right;list-style-type:none;'>";
                         echo "<li><a href='/logout'>Disconnect</a></li>";
-                        echo "<li><a href='#'>".$parameters['user']."</a></li>";
+                        echo "<li><a href='/statuses?id='".$parameters['user']."'>".$parameters['user']."</a></li>";
                     echo"</ul></ul>";
             }
             else{

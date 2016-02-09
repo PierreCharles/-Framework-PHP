@@ -4,7 +4,6 @@ namespace Model\DataMapper;
 
 use Model\DataBase\DatabaseConnection;
 use Model\Entity\Status;
-use PDO;
 
 class StatusMapper{
 
@@ -15,18 +14,16 @@ class StatusMapper{
     }
 
     public function persist(Status $status) {
-        $request = "INSERT INTO statuses(status_message,status_user_name,status_date) value(?,?,?)";
-        $param = array(
-            '1' => array($status->getMessage(), PDO::PARAM_STR),
-            '2' => array($status->getUser(), PDO::PARAM_STR),
-            '3' => array($status->getDate(), PDO::PARAM_STR)
-        );
-        $this->connection->prepareAndExecuteQuery($request, $param);
+        $request = 'INSERT INTO statuses(status_message,status_user_name,status_date) value(:message,:user,:date)';
+        $this->connection->prepareAndExecuteQuery($request, [
+            'message'=>$status->getMessage(),
+            'user'=>$status->getUser(),
+            'date'=>$status->getDate()
+        ]);
     }
 
     public function remove($id) {
-        $request = "DELETE FROM statuses WHERE status_id=?";
-        $param = array('1'=>array($id, PDO::PARAM_INT));
-        $this->connection->prepareAndExecuteQuery($request, $param);
+        $request = 'DELETE FROM statuses WHERE status_id=:id';
+        $this->connection->prepareAndExecuteQuery($request, ['id'=>$id]);
     }
 }

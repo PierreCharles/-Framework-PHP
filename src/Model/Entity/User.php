@@ -18,6 +18,9 @@ class User {
     {
         return $this->userName;
     }
+    public function setUserName($userName){
+        $this->userName=$userName;
+    }
 
     public function getUserId()
     {
@@ -29,4 +32,7 @@ class User {
         return $this->userPassword;
     }
 
+    public function __toString(){
+        return "id:".$this->getUserId().", name:".$this->getUserName();
+    }
 }

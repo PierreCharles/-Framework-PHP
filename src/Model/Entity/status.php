@@ -26,6 +26,10 @@ class Status {
         return $this->message;
     }
 
+    public function setMessage($message){
+        $this->message=$message;
+    }
+
     public function getUser()
     {
         return $this->user;
@@ -36,7 +40,7 @@ class Status {
         return $this->date->format('Y-m-d H:i:s');
     }
 
-    public function toString(){
+    public function __toString(){
         return "id:".$this->getId().", user:".$this->getUser().",message: ".$this->getMessage().",date: ".$this->getDate();
     }
 }
