@@ -1,6 +1,3 @@
-# Launch server :
------------------
-
 ### Install dependencies
 
     composer install
@@ -26,6 +23,7 @@ Php Unit : In a terminal, try this commands:
 In a terminal, try these commands:
 
     curl -XGET -H "Accept: application/json" http://localhost:8080/statuses
+    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/
     curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/1
     curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/1000
 

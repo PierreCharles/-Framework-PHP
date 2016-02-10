@@ -81,7 +81,11 @@ $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
     $filter['limit'] = $request->getParameter("limit") ? htmlspecialchars($request->getParameter("limit")) : "";
     $filter['user_id'] = $request->getParameter("user_id") ? htmlspecialchars($request->getParameter("user_id")) : "";
 
-    $data['status'] = $statusFinder->findAll($filter);
+    ;
+    if(null === $data['status'] = $statusFinder->findAll($filter)){
+        $data['status']="";
+    }
+
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse(json_encode($data['status']), 200);
     }
@@ -106,7 +110,11 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse(json_encode($data['status']), 200);
     }
-
+    if (isset($_SESSION['user'])) {
+        $data['user'] = $_SESSION['user'];
+    } else {
+        $data['user'] = 'Unregister User';
+    }
     return $app->render('status.php', $data);
 });
 
@@ -194,7 +202,7 @@ $app->addListener('process.before', function (Request $req) use ($app) {
 
     $allowed = [
         '/login' => [Request::GET, Request::POST],
-        '/statuses/(\d+)' => [Request::GET],
+
         '/statuses' => [Request::GET, Request::POST],
         '/statuses/' => [Request::GET, Request::POST],
         '/register' => [Request::GET, Request::POST],

@@ -19,7 +19,7 @@ class StatusMapper
         $request = 'INSERT INTO statuses(status_message,status_user_name,status_date) value(:message,:user,:date)';
         $this->connection->prepareAndExecuteQuery($request, [
             'message' => $status->getMessage(),
-            'us' => $status->getUser(),
+            'user' => $status->getUser(),
             'date' => $status->getDate(),
         ]);
     }

@@ -18,19 +18,19 @@ class UserFinder
     {
         $request = 'SELECT * FROM user WHERE user_id=:id';
         $this->connection->prepareAndExecuteQuery($request, ['id' => $id]);
-        $result = $this->connection->getResult()[0];
+        $result = $this->connection->getResult();
         $this->connection->destroyQueryResults();
 
-        return !count($result) == 0 ? new User($result['user_id'], $result['user_name'], $result['user_password']) : null;
+        return count($result) == 0 ? null : new User($result[0]['user_id'], $result[0]['user_name'], $result[0]['user_password']);
     }
 
     public function findOneByUserName($user)
     {
         $request = 'SELECT * FROM user WHERE user_name=:name';
         $this->connection->prepareAndExecuteQuery($request, ['name' => $user]);
-        $result = $this->connection->getResult()[0];
+        $result = $this->connection->getResult();
         $this->connection->destroyQueryResults();
 
-        return !count($result) == 0 ? new User($result['user_id'], $result['user_name'], $result['user_password']) : null;
+        return count($result) == 0 ? null : new User($result[0]['user_id'], $result[0]['user_name'], $result[0]['user_password']);
     }
 }
