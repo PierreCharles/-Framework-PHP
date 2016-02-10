@@ -4,49 +4,51 @@ namespace Model\DataBase;
 
 use PDO;
 
-class DatabaseConnection extends PDO {
+class DatabaseConnection extends PDO
+{
     /**
      * Database connection
      * $host        = Host
      * $base        = Database name
      * $login       = Database username
      * $mdp         = Database password
-     * $statement   = a statement
+     * $statement   = a statement.
      */
-    private
-        $statement,
-        $base = "TweetTweet",
-        $login="root",
-        $mdp="",
-        $host="localhost";
+    private $statement,
+        $base = 'TweetTweet',
+        $login = 'root',
+        $mdp = '',
+        $host = 'localhost';
 
     // Constructor of a database connection
-    public function __construct() {
-        parent::__construct('mysql:host='.$this->host.';dbname='.$this->base,$this->login,$this->mdp);
+    public function __construct()
+    {
+        parent::__construct('mysql:host='.$this->host.';dbname='.$this->base, $this->login, $this->mdp);
     }
 
-    public  function prepareAndExecuteQuery($query, array $parameters = []){
-        $this->statement=$this->prepare($query);
-        foreach($parameters as $name => $value){
-            $this->statement->bindValue(':'.$name,$value);
+    public function prepareAndExecuteQuery($query, array $parameters = [])
+    {
+        $this->statement = $this->prepare($query);
+        foreach ($parameters as $name => $value) {
+            $this->statement->bindValue(':'.$name, $value);
         }
         $this->statement->execute();
         //var_dump($this->statement->errorInfo());
     }
 
     // get result
-    public function getResult(){
+    public function getResult()
+    {
         return $this->statement->fetchAll();
     }
 
     // Destroy statement
-    public function destroyQueryResults(){
+    public function destroyQueryResults()
+    {
         $this->statement->closeCursor();
-        $this->statement=NULL;
+        $this->statement = null;
     }
 }
-
-
 /*
 // Old methode
 public function prepareAndExecuteQueryOld($request, $param){

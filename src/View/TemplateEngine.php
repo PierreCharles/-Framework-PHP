@@ -15,14 +15,14 @@ class TemplateEngine implements TemplateEngineInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function render($template, array $parameters = array())
     {
         extract($parameters);
 
         if (false === $this->isAbsolutePath($template)) {
-            $template = $this->templateDir . DIRECTORY_SEPARATOR . $template;
+            $template = $this->templateDir.DIRECTORY_SEPARATOR.$template;
         }
 
         ob_start();
@@ -33,6 +33,7 @@ class TemplateEngine implements TemplateEngineInterface
 
     /**
      * @param $file
+     *
      * @return bool
      */
     private function isAbsolutePath($file)

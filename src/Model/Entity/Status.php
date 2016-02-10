@@ -4,15 +4,15 @@ namespace Model\Entity;
 
 use DateTime;
 
-class Status {
-
+class Status
+{
     private $user,$message,$date;
 
     public function __construct($id, $user, $message, $date)
     {
-        $this->id=$id;
-        $this->user=$user;
-        $this->message=$message;
+        $this->id = $id;
+        $this->user = $user;
+        $this->message = $message;
         $this->date = new DateTime($date);
     }
 
@@ -26,8 +26,9 @@ class Status {
         return $this->message;
     }
 
-    public function setMessage($message){
-        $this->message=$message;
+    public function setMessage($message)
+    {
+        $this->message = $message;
     }
 
     public function getUser()
@@ -40,7 +41,8 @@ class Status {
         return $this->date->format('Y-m-d H:i:s');
     }
 
-    public function __toString(){
-        return "id:".$this->getId().", user:".$this->getUser().",message: ".$this->getMessage().",date: ".$this->getDate();
+    public function __toString()
+    {
+        return 'id:'.$this->getId().', user:'.$this->getUser().',message: '.$this->getMessage().',date: '.$this->getDate();
     }
 }

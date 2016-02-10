@@ -1,16 +1,17 @@
 <?php
+
 namespace Model\Entity;
 
-class User {
-
-    private
-        $userId,
+class User
+{
+    private $userId,
         $userName,
         $userPassword;
 
-    function __construct($userId, $userName, $userPassword) {
+    public function __construct($userId, $userName, $userPassword)
+    {
         $this->userId = $userId;
-        $this->userName=$userName;
+        $this->userName = $userName;
         $this->userPassword = $userPassword;
     }
 
@@ -18,8 +19,9 @@ class User {
     {
         return $this->userName;
     }
-    public function setUserName($userName){
-        $this->userName=$userName;
+    public function setUserName($userName)
+    {
+        $this->userName = $userName;
     }
 
     public function getUserId()
@@ -32,7 +34,8 @@ class User {
         return $this->userPassword;
     }
 
-    public function __toString(){
-        return "id:".$this->getUserId().", name:".$this->getUserName();
+    public function __toString()
+    {
+        return 'id:'.$this->getUserId().', name:'.$this->getUserName();
     }
 }

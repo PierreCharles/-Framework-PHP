@@ -1,15 +1,20 @@
 ### Launch server with :
 ------------------------
 
+# Install dependencies
+
     composer install
+
+# Launch server
 
     php -S localhost:8080 -t web/
 
 ### Testing
 -----------
+
 Php Unit : In a terminal, try this commands:
 
-    php phpunit-5.2.3.phar
+    php vendor/phpunit/phpunit/phpunit
 
 In a terminal, try these commands:
 
@@ -23,9 +28,31 @@ Also, try to create new statuses using JSON:
     -d '{ "user": "picharles", "message": "Je suis un TweetTweet de test"}' \
     http://localhost:8080/statuses
 
+
+### Realized tasks
+------------------
+
+    - Routes
+    - Using the request
+    - Post, get, Delete Resource
+    - DataMapper (User and Status)
+    - Entity (User and Status)
+    - Database connection
+    - DataFinder (User and Status)
+    - Authentication
+    - Login, register, status, statuses view
+    - Filtering the results
+    - Firewall with a dispatcher
+    - Use composer
+    - Validation and verification for all parameters
+    - Mock connection
+    - Unit tests
+    - Functional tests
+    - Fix with php-cs-fixer
+
+
 Anatomy of &micro;Framework
 ---------------------------
-
 
 The directory layout looks like this:
 
@@ -56,8 +83,3 @@ and a `index.php` file.
 The `index.php` file is the only entry point of this application.  It is called
 a **front controller**.
 
-
-Autoloading
------------
-
-This is a PSR-0 compliant autoloader. The &micro;Framework has a `autoload.php` file.

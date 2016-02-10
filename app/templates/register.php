@@ -5,31 +5,31 @@
     <div class="form">
             <form action="/register" method="POST">
 
-                <p><label>User name : </label></p>
+                <label>User name : </label>
                 <?php
                 if (isset($parameters['error']['user'])) {
                     echo "<input name='user' type='text' size='50' value='".$parameters['user']."' style='background-color:indianred;'/>";
-                    echo '<p><span style="color:red; float:center; font-size:14px;">' . $parameters['error']['user'] . '</span></p>';
+                    echo '<p><span style="color:red; float:center; font-size:14px;">'.$parameters['error']['user'].'</span></p>';
                 } else {
                     echo "<input name='user' value='".$parameters['user']."' type='text' size='50' />";
                 }
                 ?>
 
-                <p><label>Password : </label></p>
+                <label>Password : </label>
                 <?php
                 if (isset($parameters['error']['password'])) {
                     echo "<input name='password' type='password' size='50' value='".$parameters['password']."' style='background-color:indianred;'/>";
-                    echo '<p><span style="color:red; float:center; font-size:14px;">' . $parameters['error']['password'] . '</span></p>';
+                    echo '<p><span style="color:red; float:center; font-size:14px;">'.$parameters['error']['password'].'</span></p>';
                 } else {
                     echo "<input name='password' value='".$parameters['password']."' type='password' size='50' />";
                 }
                 ?>
 
-                <p><label>Confirmation : </label></p>
+                <label>Confirmation : </label>
                 <?php
                 if (isset($parameters['error']['confirm'])) {
                     echo "<input name='confirm' type='password' size='50' value='".$parameters['confirm']."' style='background-color:indianred;'/>";
-                    echo '<p><span style="color:red; float:center; font-size:14px;">' . $parameters['error']['confirm'] . '</span></p>';
+                    echo '<p><span style="color:red; float:center; font-size:14px;">'.$parameters['error']['confirm'].'</span></p>';
                 } else {
                     echo "<input name='confirm' value='".$parameters['confirm']."' type='password' size='50' />";
                 }
@@ -38,11 +38,11 @@
 
                 <fieldset id="fieldset_captcha">
                     <p class="centre">Write the follow code to continue.<br /></p>
-                    <label for="captcha"><?php header("Content-Type: image/png"); echo "<img src='./captcha.php'; "; ?> </label><br />
+                    <label for="captcha"><?php echo "<img src='./scripts/captcha.php'; "; ?> </label><br />
                     <?php
                     if (isset($parameters['error']['captcha'])) {
                         echo "<input type='text' name='captcha' id='captcha' style='background-color:indianred;'/>";
-                        echo '<p><span style="color:red; float:center; font-size:14px;">' . $parameters['error']['captcha'] . '</span></p>';
+                        echo '<p><span style="color:red; float:center; font-size:14px;">'.$parameters['error']['captcha'].'</span></p>';
                     } else {
                         echo "<input type='text' name='captcha' id='captcha' />";
                     }

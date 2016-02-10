@@ -4,14 +4,12 @@ namespace Model\Finder;
 
 use Model\DataBase\DatabaseConnection;
 use Model\Entity\Status;
-use PDO;
 
 class StatusFinder implements FinderInterface
 {
-
     private $connection;
 
-    function __construct(DatabaseConnection $connection)
+    public function __construct(DatabaseConnection $connection)
     {
         $this->connection = $connection;
     }
@@ -26,6 +24,7 @@ class StatusFinder implements FinderInterface
         foreach ($results as $status) {
             $statuses[] = new Status($status['status_id'], $status['status_user_name'], $status['status_message'], $status['status_date']);
         }
+
         return $statuses;
     }
 
@@ -35,7 +34,7 @@ class StatusFinder implements FinderInterface
         $this->connection->prepareAndExecuteQuery($query, ['id' => $id]);
         $result = $this->connection->getResult()[0];
         $this->connection->destroyQueryResults();
+
         return new Status($result['status_id'], $result['status_message'], $result['status_user_name'], $result['status_date']);
     }
-
 }

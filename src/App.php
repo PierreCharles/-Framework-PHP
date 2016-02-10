@@ -12,9 +12,9 @@ class App
 {
     use EventDispatcherTrait;
 
-    const GET    = 'GET';
-    const POST   = 'POST';
-    const PUT    = 'PUT';
+    const GET = 'GET';
+    const POST = 'POST';
+    const PUT = 'PUT';
     const DELETE = 'DELETE';
 
     /**
@@ -28,7 +28,7 @@ class App
     private $templateEngine;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $debug;
 
@@ -40,7 +40,7 @@ class App
     public function __construct(TemplateEngineInterface $templateEngine, $debug = false)
     {
         $this->templateEngine = $templateEngine;
-        $this->debug          = $debug;
+        $this->debug = $debug;
 
         $exceptionHandler = new ExceptionHandler($templateEngine, $this->debug);
         set_exception_handler(array($exceptionHandler, 'handle'));
@@ -69,6 +69,7 @@ class App
     public function get($pattern, $callable)
     {
         $this->registerRoute(self::GET, $pattern, $callable);
+
         return $this;
     }
 
@@ -81,6 +82,7 @@ class App
     public function post($pattern, $callable)
     {
         $this->registerRoute(self::POST, $pattern, $callable);
+
         return $this;
     }
 
@@ -93,6 +95,7 @@ class App
     public function put($pattern, $callable)
     {
         $this->registerRoute(self::PUT, $pattern, $callable);
+
         return $this;
     }
 
@@ -105,18 +108,18 @@ class App
     public function delete($pattern, $callable)
     {
         $this->registerRoute(self::DELETE, $pattern, $callable);
+
         return $this;
     }
 
-
     public function run(Request $request = null)
     {
-		if(null === $request){
-			$request = Request::createFromGlobals();
-		}
+        if (null === $request) {
+            $request = Request::createFromGlobals();
+        }
 
-		$method = $request->getMethod();
-		$uri = $request->getUri();
+        $method = $request->getMethod();
+        $uri = $request->getUri();
 
         foreach ($this->routes as $route) {
             if ($route->match($method, $uri)) {
@@ -160,6 +163,6 @@ class App
      */
     private function registerRoute($method, $pattern, $callable)
     {
-		$this->routes[] = new Route($method, $pattern, $callable);
+        $this->routes[] = new Route($method, $pattern, $callable);
     }
 }
