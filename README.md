@@ -1,11 +1,11 @@
-### Launch server with :
-------------------------
+# Launch server with :
+----------------------
 
-# Install dependencies
+### Install dependencies
 
     composer install
 
-# Launch server
+### Launch server
 
     php -S localhost:8080 -t web/
 
