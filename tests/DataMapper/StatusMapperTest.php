@@ -21,7 +21,7 @@ class StatusMapperTest extends TestCase{
     }
     public function testPersist(){
         $status = new Status("sqg", "picharles", 'message', date('Y-m-d H:i:s'));
-        $this->assertTrue($this->mapper->persist($status));
+        $this->assertTrue($this->mapper->persist($status) !== null);
     }
 
     public function testRemove(){

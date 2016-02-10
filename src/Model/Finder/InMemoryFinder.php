@@ -17,9 +17,10 @@ class InMemoryFinder implements FinderInterface
     }
 
     /**
+     * @param $filter
      * @return array
      */
-    public function findAll()
+    public function findAll($filter)
     {
         return $this->bdd;
     }

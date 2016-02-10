@@ -11,6 +11,13 @@
 
 ### Testing
 -----------
+Filtering the query result
+
+    GET /statuses?limit=0,5&order=status_user_name&by=DESC
+    GET /statuses?limit=2,4&order=status_id&by=ASC
+    GET /statuses?limit=0,10&order=status_user_name
+    GET /statuses?order=status_date
+    GET /statuses?limit=0,5
 
 Php Unit : In a terminal, try this commands:
 

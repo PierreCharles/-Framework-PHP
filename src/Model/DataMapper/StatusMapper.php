@@ -19,7 +19,7 @@ class StatusMapper
         $request = 'INSERT INTO statuses(status_message,status_user_name,status_date) value(:message,:user,:date)';
         $this->connection->prepareAndExecuteQuery($request, [
             'message' => $status->getMessage(),
-            'user' => $status->getUser(),
+            'us' => $status->getUser(),
             'date' => $status->getDate(),
         ]);
     }
@@ -31,19 +31,4 @@ class StatusMapper
     }
 
 
-
-    private $mapper;
-
-    public function setUp()
-    {
-        $this->mapper = new Model\StatusMapper($this->getMock('MockConnection'));
-    }
-    public function testPersist()
-    {
-        $this->mapper->persist($this->getMock('Model\Status'));
-    }
-    public function testRemove()
-    {
-        $this->mapper->remove($this->getMock('Model\Status'));
-    }
 }

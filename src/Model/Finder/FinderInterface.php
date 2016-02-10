@@ -6,9 +6,11 @@ interface FinderInterface
 {
     /**
      * Returns all elements.
-     * @return array.
+     * 
+     * @param $filter
+     * @return array .
      */
-    public function findAll();
+    public function findAll($filter);
 
     /**
      * Retrieve an element by its id.

@@ -11,10 +11,12 @@ class JsonFinder implements FinderInterface
     {
         $this->bdd = json_decode(file_get_contents($this->filePath), true);
     }
+
     /**
+     * @param $filter
      * @return array
      */
-    public function findAll()
+    public function findAll($filter)
     {
         return $this->bdd;
     }

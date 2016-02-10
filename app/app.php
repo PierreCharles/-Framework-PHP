@@ -70,7 +70,15 @@ $app->get('/logout', function () use ($app) {
 
 // Matches if the HTTP method is GET -> /statuses
 $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
-    $data['status'] = $statusFinder->findAll();
+
+    if(isset($_SESSION['error'])&& !empty($_SESSION['error'])){
+        $data['error'] = $_SESSION['error'];
+        $_SESSION['error']="";
+    }
+    $filter['order'] = $request->getParameter("order") ? htmlspecialchars($request->getParameter("order")) : "";
+    $filter['by'] = $request->getParameter("by") ? htmlspecialchars($request->getParameter("by")) : "";
+    $filter['limit'] = $request->getParameter("limit") ? htmlspecialchars($request->getParameter("limit")) : "";
+    $data['status'] = $statusFinder->findAll($filter);
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse(json_encode($data['status']), 200);
     }
@@ -79,7 +87,6 @@ $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
     } else {
         $data['user'] = 'Unregister User';
     }
-
     return $app->render('index.php', $data);
 });
 
@@ -97,14 +104,11 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
 
 // Matches if the HTTP method is POST -> /statutes
 $app->post('/statuses', function (Request $request) use ($app, $statusFinder, $statusMapper, $userMapper) {
-    echo htmlspecialchars($request->getParameter('id'));
     $data['user'] = htmlspecialchars($request->getParameter('user'));
     $data['message'] = htmlspecialchars($request->getParameter('message'));
     if (empty($data['message'])) {
-        $data['error'] = 'Empty status';
-        $data['status'] = $statusFinder->findAll();
-
-        return $app->render('index.php', $data);
+        $_SESSION['error']="Empty status";
+        return $app->redirect('/statuses');
     }
     $status = new Status(null, $data['user'], $data['message'], date('Y-m-d H:i:s'));
     $statusMapper->persist($status);

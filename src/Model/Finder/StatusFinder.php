@@ -14,10 +14,16 @@ class StatusFinder implements FinderInterface
         $this->connection = $connection;
     }
 
-    public function findAll()
+    public function findAll($criteria)
     {
-        $query = 'SELECT * FROM statuses';
-        $this->connection->prepareAndExecuteQuery($query, []);
+        if(empty($criteria['by'])){
+            $criteria['by']="DESC";
+        }
+        empty($criteria['order']) ? $criteria['orderBy']="" :$criteria['orderBy']="ORDER BY ".$criteria['order']." ".$criteria['by'];
+        empty($criteria['limit']) ? "" : $criteria['limit']="LIMIT ".$criteria['limit'];
+        $query = "SELECT * FROM statuses ".$criteria['orderBy']." ".$criteria['limit'];
+
+        $this->connection->prepareAndExecuteQuery($query);
         $results = $this->connection->getResult();
         $this->connection->destroyQueryResults();
         $statuses = array();
