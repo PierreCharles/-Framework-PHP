@@ -29,4 +29,21 @@ class StatusMapper
         $request = 'DELETE FROM statuses WHERE status_id=:id';
         $this->connection->prepareAndExecuteQuery($request, ['id' => $id]);
     }
+
+
+
+    private $mapper;
+
+    public function setUp()
+    {
+        $this->mapper = new Model\StatusMapper($this->getMock('MockConnection'));
+    }
+    public function testPersist()
+    {
+        $this->mapper->persist($this->getMock('Model\Status'));
+    }
+    public function testRemove()
+    {
+        $this->mapper->remove($this->getMock('Model\Status'));
+    }
 }

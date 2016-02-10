@@ -28,6 +28,9 @@ Also, try to create new statuses using JSON:
     -d '{ "user": "picharles", "message": "Je suis un TweetTweet de test"}' \
     http://localhost:8080/statuses
 
+### Fixer
+
+    php vendor/fabpot/php-cs-fixer fix src/
 
 ### Realized tasks
 ------------------
@@ -60,7 +63,6 @@ The directory layout looks like this:
     ├ src/      # the framework sources
     ├ tests/    # the test suite
     ├ web/      # public directory
-    └ autoload.php
 
 ### `app` directory
 
