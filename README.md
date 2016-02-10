@@ -1,5 +1,5 @@
-# Launch server with :
-----------------------
+# Launch server :
+-----------------
 
 ### Install dependencies
 
@@ -9,7 +9,7 @@
 
     php -S localhost:8080 -t web/
 
-### Testing
+# Testing
 -----------
 Filtering the query result
 
@@ -37,7 +37,7 @@ Also, try to create new statuses using JSON:
 
 ### Fixer
 
-    php vendor/fabpot/php-cs-fixer fix src/
+    php vendor/fabpot/php-cs-fixer/php-cs-fixer fix src/
 
 ### Realized tasks
 ------------------

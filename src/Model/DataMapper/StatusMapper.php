@@ -29,6 +29,4 @@ class StatusMapper
         $request = 'DELETE FROM statuses WHERE status_id=:id';
         $this->connection->prepareAndExecuteQuery($request, ['id' => $id]);
     }
-
-
 }

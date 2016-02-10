@@ -14,6 +14,7 @@ class JsonFinder implements FinderInterface
 
     /**
      * @param $filter
+     *
      * @return array
      */
     public function findAll($filter)

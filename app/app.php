@@ -7,6 +7,7 @@ use Exception\HttpException;
 use Model\Finder\StatusFinder;
 use Model\Finder\UserFinder;
 use Http\JsonResponse;
+use Http\Response;
 use Http\Request;
 use Model\DataBase\DatabaseConnection;
 use Model\DataMapper\StatusMapper;
@@ -78,6 +79,8 @@ $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
     $filter['order'] = $request->getParameter("order") ? htmlspecialchars($request->getParameter("order")) : "";
     $filter['by'] = $request->getParameter("by") ? htmlspecialchars($request->getParameter("by")) : "";
     $filter['limit'] = $request->getParameter("limit") ? htmlspecialchars($request->getParameter("limit")) : "";
+    $filter['user_id'] = $request->getParameter("user_id") ? htmlspecialchars($request->getParameter("user_id")) : "";
+
     $data['status'] = $statusFinder->findAll($filter);
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse(json_encode($data['status']), 200);
@@ -92,8 +95,13 @@ $app->get('/statuses', function (Request $request) use ($app, $statusFinder) {
 
 // Matches if the HTTP method is GET -> /statuses/id
 $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $statusFinder) {
+    if(!Validation::isInt($id)) {
+        $response = new Response("Incorrect id parameter",400);
+        $response->send();
+        return;
+    }
     if (null === $data['status'] = $statusFinder->findOneById($id)) {
-        throw new HttpException(404);
+        throw new HttpException(404, 'Status not Found');
     }
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse(json_encode($data['status']), 200);
@@ -167,11 +175,15 @@ $app->put('/', function () use ($app) {
 
 // Matches if the HTTP method is DELETE -> /statuses/id
 $app->delete('/statuses/(\d+)', function (Request $request, $id) use ($app, $statusFinder, $statusMapper) {
+    if(!Validation::isInt($id)) {
+        $response = new Response("Incorrect id parameter",400);
+        $response->send();
+        return;
+    }
     if (null == $statusFinder->findOneById($id)) {
-        throw new HttpException(404, 'Not Found');
+        throw new HttpException(404, 'Status not Found');
     }
     $statusMapper->remove($id);
-
     return $app->redirect('/statuses');
 });
 
