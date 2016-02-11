@@ -58,7 +58,7 @@ class Request
     {
         $negotiator = new Negotiator();
         $acceptHeader = $_SERVER['HTTP_ACCEPT'];
-        $priorities = array('text/html; charset=UTF-8', 'application/json');
+        $priorities = array('text/html;charset=UTF-8', 'application/json');
         $value = $negotiator->getBest($acceptHeader, $priorities)->getValue();
         switch ($value) {
             case 'application/json':

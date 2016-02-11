@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS STATUSES;
 --
 -- Structure de la table `Statuses`
 --
-CREATE TABLE USER(
+CREATE TABLE IF NOT EXISTS USER(
   user_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   user_name VARCHAR(100) NOT NULL,
   user_password VARCHAR(100) NOT NULL
@@ -13,7 +13,7 @@ CREATE TABLE USER(
 --
 -- Structure de la table `Statuses`
 --
-CREATE TABLE STATUSES(
+CREATE TABLE IF NOT EXISTS STATUSES(
   status_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   status_message VARCHAR(140) NOT NULL,
   status_user_name VARCHAR(100),

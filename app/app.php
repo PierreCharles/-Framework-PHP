@@ -125,7 +125,7 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
         throw new HttpException(404, 'Status not found');
     }
     if ($request->guessBestFormat() === 'json') {
-        return new JsonResponse(json_encode($data['status']), 200);
+        return new JsonResponse(json_encode($data['status']), 201);
     }
     if (isset($_SESSION['user'])) {
         $data['user'] = $_SESSION['user'];

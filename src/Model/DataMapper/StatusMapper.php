@@ -3,9 +3,8 @@
 namespace Model\DataMapper;
 
 use Model\DataBase\DatabaseConnection;
-use Model\Entity\Status;
 
-class StatusMapper
+class StatusMapper implements DataMapperInterface
 {
     private $connection;
 
@@ -14,7 +13,7 @@ class StatusMapper
         $this->connection = $connection;
     }
 
-    public function persist(Status $status)
+    public function persist($status)
     {
         $request = 'INSERT INTO statuses(status_message,status_user_name,status_date) value(:message,:user,:date)';
 

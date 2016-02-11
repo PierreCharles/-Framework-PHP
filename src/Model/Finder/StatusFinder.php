@@ -23,7 +23,7 @@ class StatusFinder implements FinderInterface
         empty($criteria['limit']) ? '' : $criteria['limit'] = 'LIMIT '.$criteria['limit'];
         empty($criteria['user_id']) ? '' : $criteria['user_id'] = "WHERE status_user_name = '".$criteria['user_id']."'";
 
-        $query = 'SELECT * FROM statuses '.$criteria['user_id'].' '.$criteria['orderBy'].' '.$criteria['limit'];
+        $query = 'SELECT * FROM STATUSES '.$criteria['user_id'].' '.$criteria['orderBy'].' '.$criteria['limit'];
 
         $this->connection->prepareAndExecuteQuery($query);
         $results = $this->connection->getResult();
@@ -41,7 +41,7 @@ class StatusFinder implements FinderInterface
 
     public function findOneById($id)
     {
-        $query = 'SELECT * FROM statuses WHERE status_id=:id';
+        $query = 'SELECT * FROM STATUSES WHERE status_id=:id';
         $this->connection->prepareAndExecuteQuery($query, ['id' => $id]);
         $result = $this->connection->getResult();
         $this->connection->destroyQueryResults();

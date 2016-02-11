@@ -2,10 +2,9 @@
 
 namespace Model\DataMapper;
 
-use Model\Entity\User;
 use Model\DataBase\DatabaseConnection;
 
-class UserMapper
+class UserMapper implements DataMapperInterface
 {
     private $connection;
 
@@ -14,7 +13,7 @@ class UserMapper
         $this->connection = $connection;
     }
 
-    public function persist(User $user)
+    public function persist($user)
     {
         $request = 'INSERT INTO user(user_name, user_password) value(:name,:password)';
         $this->connection->prepareAndExecuteQuery($request, ['name' => $user->getUserName(), 'password' => $user->getUserPassword()]);

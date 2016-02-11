@@ -1,6 +1,6 @@
 <?php
 
-namespace Mock;
+namespace ModelTest\Mock;
 
 use Model\DataBase\DatabaseConnection;
 
