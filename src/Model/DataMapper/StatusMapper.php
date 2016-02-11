@@ -15,7 +15,7 @@ class StatusMapper implements DataMapperInterface
 
     public function persist($status)
     {
-        $request = 'INSERT INTO statuses(status_message,status_user_name,status_date) value(:message,:user,:date)';
+        $request = 'INSERT INTO statuses(status_message,status_user_name,status_date) value(:message, :user, :date)';
 
         return $this->connection->prepareAndExecuteQuery($request, [
             'message' => $status->getMessage(),

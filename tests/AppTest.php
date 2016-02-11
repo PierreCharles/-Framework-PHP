@@ -1,6 +1,7 @@
 <?php
 
-class AppTest extends TestCase{
+class AppTest extends TestCase
+{
     private $app;
 
     public function setUp()
@@ -92,7 +93,7 @@ class AppTest extends TestCase{
 
     private function readStatusCode($object)
     {
-        $reflObj  = new \ReflectionObject($object);
+        $reflObj = new \ReflectionObject($object);
         $reflProp = $reflObj->getProperty('statusCode');
         $reflProp->setAccessible(true);
 
@@ -101,7 +102,7 @@ class AppTest extends TestCase{
 
     private function readRoutes($object)
     {
-        $reflObj  = new \ReflectionObject($object);
+        $reflObj = new \ReflectionObject($object);
         $reflProp = $reflObj->getProperty('routes');
         $reflProp->setAccessible(true);
 

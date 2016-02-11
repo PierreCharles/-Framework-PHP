@@ -2,15 +2,13 @@
 
 namespace View;
 
-use View\TemplateEngine;
-
 class TemplateEngineTest extends \TestCase
 {
     public function testRender()
     {
-        $engine = new TemplateEngine(__DIR__ . '/../fixtures/templates');
+        $engine = new TemplateEngine(__DIR__.'/../fixtures/templates');
         $result = $engine->render('1.php', array(
-            'message' => 'World'
+            'message' => 'World',
         ));
 
         $this->assertNotEmpty($result);
@@ -19,9 +17,9 @@ class TemplateEngineTest extends \TestCase
 
     public function testRenderWithAbsoluteTemplatePath()
     {
-        $engine = new TemplateEngine(__DIR__ . '/../fixtures/templates');
-        $result = $engine->render(__DIR__ . '/../fixtures/templates/1.php', array(
-            'message' => 'World'
+        $engine = new TemplateEngine(__DIR__.'/../fixtures/templates');
+        $result = $engine->render(__DIR__.'/../fixtures/templates/1.php', array(
+            'message' => 'World',
         ));
 
         $this->assertNotEmpty($result);
