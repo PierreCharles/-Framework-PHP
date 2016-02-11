@@ -1,10 +1,10 @@
 <?php
 namespace DataMapper;
 
+use Mock\MockConnection;
 use Model\DataMapper\StatusMapper;
 use Model\Entity\Status;
 use TestCase;
-use DateTime;
 
 class StatusMapperTest extends TestCase{
 
@@ -13,15 +13,14 @@ class StatusMapperTest extends TestCase{
 
     public function setUp(){
         $this->connection = $this->getMock('Mock\MockConnection');
+        $this->mapper = new StatusMapper($this->connection);
         $this->connection
             ->expects($this->once())
             ->method('prepareAndExecuteQuery');
-
-        $this->mapper = new StatusMapper($this->connection);
     }
     public function testPersist(){
         $status = new Status("sqg", "picharles", 'message', date('Y-m-d H:i:s'));
-        $this->assertTrue($this->mapper->persist($status) !== null);
+        $this->assertTrue($this->mapper->persist($status));
     }
 
     public function testRemove(){

@@ -2,9 +2,34 @@
 
     composer install
 
+### Database installation with Docker
+
+    docker run -d \
+        --volume /var/lib/mysql \
+        --name data_mysql \
+        --entrypoint /bin/echo \
+        busybox \
+        "mysql data-only container"
+
+    docker run -d -p 3306 \
+        --name mysql \
+        --volumes-from data_mysql \
+        -e MYSQL_USER=uframework \
+        -e MYSQL_PASS=p4ssw0rd \
+        -e ON_CREATE_DB=uframework \
+        tutum/mysql
+
+    mysql uframework -uuframework -pp4sswOrd < app/config/schema.sql
+
 ### Launch server
 
     php -S localhost:8080 -t web/
+
+---------------------------------
+You can register you or you can log in on this website with a default user:
+    - login : UserTest
+    - password : kg4GKGu5hjk
+
 
 # Testing
 -----------
@@ -13,6 +38,7 @@ Filtering the query result
     GET /statuses?limit=0,5&order=status_user_name&by=DESC
     GET /statuses?limit=2,4&order=status_id&by=ASC
     GET /statuses?limit=0,10&order=status_user_name
+    GET /statuses?user_id=UserTest&limit=0,1
     GET /statuses?order=status_date
     GET /statuses?limit=0,5
 
@@ -23,7 +49,6 @@ Php Unit : In a terminal, try this commands:
 In a terminal, try these commands:
 
     curl -XGET -H "Accept: application/json" http://localhost:8080/statuses
-    curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/
     curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/1
     curl -XGET -H "Accept: application/json" http://localhost:8080/statuses/1000
 
@@ -51,7 +76,7 @@ Also, try to create new statuses using JSON:
     - Login, register, status, statuses view
     - Filtering the results
     - Firewall with a dispatcher
-    - Use composer
+    - Use composer for autoloading
     - Validation and verification for all parameters
     - Mock connection
     - Unit tests

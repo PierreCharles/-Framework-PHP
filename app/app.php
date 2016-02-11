@@ -16,19 +16,33 @@ use Model\Entity\Status;
 use Model\Entity\User;
 use Validation\Validation;
 
-// Config
+/**
+ * Config
+ */
 $debug = true;
-$connection = new DatabaseConnection();
+$base = 'uframework';
+$login = 'uframework';
+$mdp = 'p4ssw0rd';
+$host = '127.0.0.1';
+
+/**
+ * Connection
+ */
+$connection = null;
+try {
+    $connection = new DatabaseConnection('mysql:host='.$host.';dbname='.$base, $login, $mdp);
+} catch (PDOException $e) {
+    echo 'Connection failed : ' . $e->getMessage();
+}
+
 $statusFinder = new StatusFinder($connection);
 $userFinder = new UserFinder($connection);
 $statusMapper = new StatusMapper($connection);
 $userMapper = new UserMapper($connection);
-//$finder = new JsonFinder();
 
-/*
+/**
  * Index
  */
-
 $app = new \App(new View\TemplateEngine(
     __DIR__.'/templates/'
 ), $debug);
@@ -105,7 +119,10 @@ $app->get('/statuses/(\d+)', function (Request $request, $id) use ($app, $status
         return;
     }
     if (null === $data['status'] = $statusFinder->findOneById($id)) {
-        throw new HttpException(404, 'Status not Found');
+        if ($request->guessBestFormat() === 'json') {
+            return new JsonResponse(json_encode("Status not found"), 204);
+        }
+        throw new HttpException(404, 'Status not found');
     }
     if ($request->guessBestFormat() === 'json') {
         return new JsonResponse(json_encode($data['status']), 200);
@@ -141,17 +158,14 @@ $app->post('/login', function (Request $request) use ($app, $userFinder) {
     $data['password'] = $request->getParameter('password');
     if (Validation::validateConnection($data['user'], $data['password'])) {
         $data['error'] = 'Empty Username or password';
-
         return $app->render('login.php', $data);
     }
     if (null == $user = $userFinder->findOneByUserName($data['user'])) {
         $data['error'] = 'Unknown user';
-
         return $app->render('login.php', $data);
     }
     if (!password_verify($data['password'], $user->getUserPassword())) {
         $data['error'] = 'Bad password';
-
         return $app->render('login.php', $data);
     }
     $_SESSION['id'] = $user->getUserId();
@@ -202,7 +216,6 @@ $app->addListener('process.before', function (Request $req) use ($app) {
 
     $allowed = [
         '/login' => [Request::GET, Request::POST],
-
         '/statuses' => [Request::GET, Request::POST],
         '/statuses/' => [Request::GET, Request::POST],
         '/register' => [Request::GET, Request::POST],
