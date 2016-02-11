@@ -11,6 +11,8 @@
         busybox \
         "mysql data-only container"
 
+Initialize MySQL with a user/password and a database
+
     docker run -d -p 3306 \
         --name mysql \
         --volumes-from data_mysql \
@@ -18,6 +20,8 @@
         -e MYSQL_PASS=p4ssw0rd \
         -e ON_CREATE_DB=uframework \
         tutum/mysql
+
+Executing your SQL from the command line
 
     mysql uframework -uuframework -pp4sswOrd < app/config/schema.sql
 
@@ -92,6 +96,7 @@ The directory layout looks like this:
     ├ app/      # the application directory
     ├ src/      # the framework sources
     ├ tests/    # the test suite
+    ├ vendor/   # project's dependencies
     ├ web/      # public directory
 
 ### `app` directory
@@ -112,6 +117,5 @@ The test suite, all tests have to pass at the end :)
 Contains the public files. Most of the time, we put assets (CSS, JS files)
 and a `index.php` file.
 
-The `index.php` file is the only entry point of this application.  It is called
-a **front controller**.
+The `index.php` file is the only entry point of this application.  It is called a **front controller**.
 

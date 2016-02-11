@@ -17,6 +17,7 @@ class StatusMapper
     public function persist(Status $status)
     {
         $request = 'INSERT INTO statuses(status_message,status_user_name,status_date) value(:message,:user,:date)';
+
         return $this->connection->prepareAndExecuteQuery($request, [
             'message' => $status->getMessage(),
             'user' => $status->getUser(),
@@ -27,6 +28,7 @@ class StatusMapper
     public function remove($id)
     {
         $request = 'DELETE FROM statuses WHERE status_id=:id';
+
         return $this->connection->prepareAndExecuteQuery($request, ['id' => $id]);
     }
 }
