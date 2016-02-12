@@ -1,4 +1,4 @@
-CHARLES Pierre & DEVAUD Max - PHP Project
+#### CHARLES Pierre & DEVAUD Max - PHP Project
 
 ### Install dependencies
 
@@ -52,6 +52,10 @@ Filtering the query result
 
     phpunit
 
+    or
+
+    php vendor/phpunit/phpunit/phpunit
+
 In a terminal, try these commands:
 
     curl -XGET -H "Accept: application/json" http://localhost:8080/statuses
@@ -72,7 +76,7 @@ Also, try to create new statuses using JSON:
 ------------------
 
     - Routes
-    - Using the request
+    - Using requests
     - Post, get, Delete Resource
     - DataMapper (User and Status)
     - Entity (User and Status)
