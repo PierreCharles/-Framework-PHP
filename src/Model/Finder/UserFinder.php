@@ -30,7 +30,6 @@ class UserFinder
         $this->connection->prepareAndExecuteQuery($request, ['name' => $user]);
         $result = $this->connection->getResult();
         $this->connection->destroyQueryResults();
-
         return count($result) == 0 ? null : new User($result[0]['user_id'], $result[0]['user_name'], $result[0]['user_password']);
     }
 }

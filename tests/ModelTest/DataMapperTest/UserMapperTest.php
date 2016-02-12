@@ -11,6 +11,7 @@ use PDO;
 class UserMapperTest extends TestCase
 {
     private $connection;
+    private $mapper;
 
     public function setUp()
     {
@@ -24,30 +25,17 @@ CREATE TABLE IF NOT EXISTS USER (
 );
 SQL
         );
+        $this->mapper = new UserMapper($this->connection);
     }
 
     public function testPersist()
     {
-        $mapper = new UserMapper($this->connection);
         $rows = $this->connection->query('SELECT COUNT(*) FROM USER')->fetch(PDO::FETCH_NUM);
         $this->assertEquals(0, $rows[0]);
-        $user = new User(null, 'picharles', 'message', date('Y-m-d H:i:s'));
-        $mapper->persist($user);
+        $user = new User('1', 'picharles', 'p4ssw0rd');
+        $this->mapper->persist($user);
         $rows = $this->connection->query('SELECT COUNT(*) FROM USER')->fetch(PDO::FETCH_NUM);
         $this->assertEquals(1, $rows[0]);
     }
 
-    public function testRemove()
-    {
-        $mapper = new userMapper($this->connection);
-        $rows = $this->connection->query('SELECT COUNT(*) FROM USER')->fetch(\PDO::FETCH_NUM);
-        $this->assertEquals(0, $rows[0]);
-        $user = new User('1', 'picharles', 'p4ssw0rd');
-        $mapper->persist($user);
-        $rows = $this->connection->query('SELECT COUNT(*) FROM USER')->fetch(\PDO::FETCH_NUM);
-        $this->assertEquals(1, $rows[0]);
-        $mapper->remove($user->getUserId());
-        $rows = $this->connection->query('SELECT COUNT(*) FROM USER')->fetch(\PDO::FETCH_NUM);
-        $this->assertEquals(0, $rows[0]);
-    }
 }

@@ -14,7 +14,7 @@ class DatabaseConnection extends PDO
         foreach ($parameters as $name => $value) {
             $this->statement->bindValue(':'.$name, $value);
         }
-        $this->statement->execute();
+        return $this->statement->execute();
         //var_dump($this->statement->errorInfo());
     }
 

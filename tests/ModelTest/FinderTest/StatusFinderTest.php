@@ -8,6 +8,8 @@ class StatusFinderTest extends TestCase
 {
     private $connection;
     private $finder;
+    private $filter;
+
     public function setUp()
     {
         $this->connection = new DatabaseConnection('sqlite::memory:');
@@ -24,19 +26,23 @@ INSERT INTO `statuses` (`status_id`, `status_message`, `status_user_name`, `stat
 SQL
         );
         $this->finder = new StatusFinder($this->connection);
+        $this->filter['order'] = "";
+        $this->filter['by'] = "";
+        $this->filter['limit'] = "";
+        $this->filter['user_id'] = "";
     }
 
     public function testCountFindAll()
     {
-        $statuses = $this->finder->findAll([]);
+        $statuses = $this->finder->findAll($this->filter);
         $this->assertEquals(1, count($statuses));
     }
 
     public function testFindAll()
     {
-        $expected = new Status(1, 'Mon premier tweet !', 'UserTest', date('2016-02-11 00:19:39'));
-        $statuses = $this->finder->findAll([]);
-        $this->assertEquals($expected, $statuses);
+        $expected = new Status(1, 'UserTest', 'Mon premier tweet !', date('2016-02-11 00:19:39'));
+        $statuses = $this->finder->findAll($this->filter);
+        $this->assertEquals($expected, $statuses[0]);
     }
 
     public function testCountFindOneById()

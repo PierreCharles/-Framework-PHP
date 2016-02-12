@@ -10,10 +10,10 @@ class UserFinderTest extends TestCase
     private $finder;
     public function setUp()
     {
-        $this->con = new DatabaseConnection('sqlite::memory:');
-        $this->con->exec(<<<SQL
+        $this->connection = new DatabaseConnection('sqlite::memory:');
+        $this->connection->exec(<<<SQL
 CREATE TABLE IF NOT EXISTS USER (
-      user_id INT PRIMARY KEY NOT NULL,
+      user_id INT PRIMARY KEY,
       user_name VARCHAR(100) NOT NULL,
       user_password VARCHAR(100) NOT NULL
 );
@@ -40,7 +40,7 @@ SQL
 
     public function testFindOneByUserNameCount()
     {
-        $user = $this->finder->findOneByName('UserTest');
+        $user = $this->finder->findOneByUserName('UserTest');
         $this->assertEquals(1, count($user));
     }
 
