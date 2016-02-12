@@ -40,7 +40,7 @@ SQL
 
     public function testFindOneByUserNameCount()
     {
-        $user = $this->finder->findOneByName('toto');
+        $user = $this->finder->findOneByName('UserTest');
         $this->assertEquals(1, count($user));
     }
 

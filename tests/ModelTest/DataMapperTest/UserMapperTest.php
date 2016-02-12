@@ -18,7 +18,7 @@ class UserMapperTest extends TestCase
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->connection->exec(<<<SQL
 CREATE TABLE IF NOT EXISTS USER (
-      user_id INT PRIMARY KEY NOT NULL,
+      user_id INT PRIMARY KEY,
       user_name VARCHAR(100) NOT NULL,
       user_password VARCHAR(100) NOT NULL
 );

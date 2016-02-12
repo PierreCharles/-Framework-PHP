@@ -28,14 +28,14 @@ SQL
 
     public function testCountFindAll()
     {
-        $statuses = $this->finder->findAll();
+        $statuses = $this->finder->findAll([]);
         $this->assertEquals(1, count($statuses));
     }
 
     public function testFindAll()
     {
         $expected = new Status(1, 'Mon premier tweet !', 'UserTest', date('2016-02-11 00:19:39'));
-        $statuses = $this->finder->findAll();
+        $statuses = $this->finder->findAll([]);
         $this->assertEquals($expected, $statuses);
     }
 

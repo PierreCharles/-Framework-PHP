@@ -18,7 +18,7 @@ class StatusMapperTest extends TestCase
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->connection->exec(<<<SQL
 CREATE TABLE IF NOT EXISTS STATUSES (
-  status_id INT PRIMARY KEY NOT NULL,
+  status_id INT PRIMARY KEY,
   status_message VARCHAR(140) NOT NULL,
   status_user_name VARCHAR(100),
   status_date DATETIME NOT NULL
