@@ -1,3 +1,5 @@
+CHARLES Pierre & DEVAUD Max - PHP Project
+
 ### Install dependencies
 
     composer install
@@ -46,9 +48,9 @@ Filtering the query result
     GET /statuses?order=status_date
     GET /statuses?limit=0,5
 
-Php Unit : In a terminal, try this commands:
+####Php Unit : In a terminal, try this commands:
 
-    php vendor/phpunit/phpunit/phpunit
+    phpunit
 
 In a terminal, try these commands:
 
