@@ -4,12 +4,12 @@ use Model\DataBase\DatabaseConnection;
 use Model\Finder\StatusFinder;
 use Model\Entity\Status;
 
-
 class StatusFinderTest extends TestCase
 {
     private $connection;
     private $finder;
-    public function setUp(){
+    public function setUp()
+    {
         $this->connection = new DatabaseConnection('sqlite::memory:');
         $this->connection->exec(<<<SQL
 CREATE TABLE IF NOT EXISTS STATUSES (
@@ -26,23 +26,27 @@ SQL
         $this->finder = new StatusFinder($this->connection);
     }
 
-    public function testCountFindAll(){
+    public function testCountFindAll()
+    {
         $statuses = $this->finder->findAll();
-        $this->assertEquals(1,count($statuses));
+        $this->assertEquals(1, count($statuses));
     }
 
-    public function testFindAll(){
+    public function testFindAll()
+    {
         $expected = new Status(1, 'Mon premier tweet !', 'UserTest', date('2016-02-11 00:19:39'));
         $statuses = $this->finder->findAll();
-        $this->assertEquals($expected,$statuses);
+        $this->assertEquals($expected, $statuses);
     }
 
-    public function testCountFindOneById(){
+    public function testCountFindOneById()
+    {
         $status = $this->finder->findOneById(1);
-        $this->assertEquals(1,count($status));
+        $this->assertEquals(1, count($status));
     }
 
-    public function testFindOneById(){
+    public function testFindOneById()
+    {
         $expected = new Status(1, 'Mon premier tweet !', 'UserTest', date('2016-02-11 00:19:39'));
         $status = $this->finder->findOneById(1);
         $this->assertEquals($expected, $status);

@@ -8,7 +8,8 @@ class UserFinderTest extends TestCase
 {
     private $connection;
     private $finder;
-    public function setUp(){
+    public function setUp()
+    {
         $this->con = new DatabaseConnection('sqlite::memory:');
         $this->con->exec(<<<SQL
 CREATE TABLE IF NOT EXISTS USER (
@@ -24,25 +25,29 @@ SQL
         $this->finder = new UserFinder($this->connection);
     }
 
-    public function testFindOneByIdCount(){
+    public function testFindOneByIdCount()
+    {
         $user = $this->finder->findOneById(1);
-        $this->assertEquals(1,count($user));
+        $this->assertEquals(1, count($user));
     }
 
-    public function testFindOneById(){
-        $expected = new User('1','UserTest','PasswordTest');
+    public function testFindOneById()
+    {
+        $expected = new User('1', 'UserTest', 'PasswordTest');
         $user = $this->finder->findOneById(1);
         $this->assertEquals($expected, $user);
     }
 
-    public function testFindOneByUserNameCount(){
+    public function testFindOneByUserNameCount()
+    {
         $user = $this->finder->findOneByName('toto');
-        $this->assertEquals(1,count($user));
+        $this->assertEquals(1, count($user));
     }
 
-    public function testFindOneByName(){
-        $expected = new User('1','UserTest','PasswordTest');
+    public function testFindOneByName()
+    {
+        $expected = new User('1', 'UserTest', 'PasswordTest');
         $user = $this->finder->findOneByUserName('UserTest');
-        $this->assertEquals($expected,$user);
+        $this->assertEquals($expected, $user);
     }
 }
