@@ -16,7 +16,7 @@ class UserFinder
 
     public function findOneById($id)
     {
-        $request = 'SELECT * FROM user WHERE user_id=:id';
+        $request = 'SELECT * FROM USER WHERE user_id=:id';
         $this->connection->prepareAndExecuteQuery($request, ['id' => $id]);
         $result = $this->connection->getResult();
         $this->connection->destroyQueryResults();
@@ -26,7 +26,7 @@ class UserFinder
 
     public function findOneByUserName($user)
     {
-        $request = 'SELECT * FROM user WHERE user_name=:name';
+        $request = 'SELECT * FROM USER WHERE user_name=:name';
         $this->connection->prepareAndExecuteQuery($request, ['name' => $user]);
         $result = $this->connection->getResult();
         $this->connection->destroyQueryResults();
