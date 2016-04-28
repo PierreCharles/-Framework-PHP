@@ -1,5 +1,3 @@
-#### CHARLES Pierre & DEVAUD Max - PHP Project
-
 ### Install dependencies
 
     composer install
